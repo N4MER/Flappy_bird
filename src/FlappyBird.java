@@ -1,9 +1,9 @@
 import javax.swing.*;
 
 public class FlappyBird extends JFrame {
-    private GameGraphics background;
+    private Game background;
     public FlappyBird(String backgroundImageName,String birdImageName){
-        background = new GameGraphics(backgroundImageName,birdImageName);
+        background = new Game(backgroundImageName,birdImageName);
         setSize(900,504);
 
         this.setResizable(false);
