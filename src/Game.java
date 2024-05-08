@@ -9,11 +9,14 @@ public class Game extends JPanel implements ActionListener {
     private Timer gameLoop;
 
     public Game(String backGroundImageName, String birdImageName) {
-        background = new ImageIcon(backGroundImageName);
+        this.background = new ImageIcon(backGroundImageName);
         this.bird = new Bird(birdImageName);
+        this.gameLoop = new Timer(1000/60,this);
+        //this.setSize(this.background.getIconWidth(),this.background.getIconHeight());
         this.bird.setBirdX(background.getIconWidth()/8);
-        this.bird.setBirdY(background.getIconHeight()/2);
-        gameLoop = new Timer(1000/60,this);
+        this.bird.setBirdY(background.getIconHeight()/2+ bird.getBirdHeight());
+        this.setLayout(new BorderLayout());
+
         gameLoop.start();
 
 
@@ -28,9 +31,20 @@ public class Game extends JPanel implements ActionListener {
         g.drawImage(background.getImage(), 0, 0, null);
         g.drawImage(bird.getBirdImage().getImage(), bird.getBirdX(), bird.getBirdY(), null);
     }
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(getBackgroundWidth(), getBackgroundHeight());
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        bird.fall(background);
         repaint();
+    }
+    public int getBackgroundWidth(){
+        return background.getIconWidth();
+    }
+    public int getBackgroundHeight(){
+        return background.getIconHeight();
     }
 }

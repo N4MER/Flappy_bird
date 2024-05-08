@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
 
 public class Bird {
     private ImageIcon birdImage;
@@ -7,11 +6,21 @@ public class Bird {
     private int birdWidth;
     private int birdX;
     private int birdY;
+    private int birdSpeed = 6;
 
     public Bird(String birdImageName) {
         this.birdImage = new ImageIcon(birdImageName);
         this.birdHeight = birdImage.getIconHeight();
         this.birdWidth = birdImage.getIconWidth();
+    }
+
+    public void fall(ImageIcon background) {
+        if (background.getIconHeight() - birdY <= birdSpeed) {
+            birdY = background.getIconHeight() - birdHeight;
+        } else if (background.getIconHeight() - birdY - birdHeight > birdSpeed) {
+            birdY += birdSpeed;
+        }
+
     }
 
     public ImageIcon getBirdImage() {
