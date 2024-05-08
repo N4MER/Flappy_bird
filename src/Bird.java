@@ -6,7 +6,8 @@ public class Bird {
     private int birdWidth;
     private int birdX;
     private int birdY;
-    private int birdSpeed = 6;
+    private int birdSpeed = -20;
+    private int gravity = 1;
 
     public Bird(String birdImageName) {
         this.birdImage = new ImageIcon(birdImageName);
@@ -15,13 +16,15 @@ public class Bird {
     }
 
     public void fall(ImageIcon background) {
-        if (background.getIconHeight() - birdY <= birdSpeed) {
+        birdSpeed += gravity;
+        if (background.getIconHeight() - birdY - birdHeight < birdSpeed) {
             birdY = background.getIconHeight() - birdHeight;
-        } else if (background.getIconHeight() - birdY - birdHeight > birdSpeed) {
+        } else {
             birdY += birdSpeed;
         }
 
     }
+
 
     public ImageIcon getBirdImage() {
         return birdImage;
