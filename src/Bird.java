@@ -1,8 +1,10 @@
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class Bird implements KeyListener {
+public class Bird implements KeyListener, MouseListener {
     private ImageIcon birdImage;
     private int birdHeight;
     private int birdWidth;
@@ -23,7 +25,7 @@ public class Bird implements KeyListener {
             birdY = background.getIconHeight() - birdHeight;
         } else if (birdY + birdSpeed <= 0) {
             birdY = 0;
-            birdSpeed=0;
+            birdSpeed = 0;
         } else {
             birdY += birdSpeed;
         }
@@ -63,16 +65,27 @@ public class Bird implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            birdSpeed = -10;
+            birdSpeed = -12;
+        }
+    }
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if(e.getButton() == MouseEvent.BUTTON1) {
+            birdSpeed = -12;
         }
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
-    }
-
+    public void keyTyped(KeyEvent e) {}
+    @Override
+    public void keyReleased(KeyEvent e) {}
+    @Override
+    public void mouseClicked(MouseEvent e) {}
 
     @Override
-    public void keyReleased(KeyEvent e) {
-    }
+    public void mouseReleased(MouseEvent e) {}
+    @Override
+    public void mouseEntered(MouseEvent e) {}
+    @Override
+    public void mouseExited(MouseEvent e) {}
 }

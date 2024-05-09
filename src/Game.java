@@ -13,6 +13,7 @@ public class Game extends JPanel implements ActionListener {
         this.bird = new Bird(birdImageName);
         this.setFocusable(true);
         this.addKeyListener(bird);
+        this.addMouseListener(bird);
         this.gameLoop = new Timer(1000/30,this);
         this.bird.setBirdX(background.getIconWidth()/8);
         this.bird.setBirdY(background.getIconHeight()/2+ bird.getBirdHeight());
