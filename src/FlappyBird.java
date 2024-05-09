@@ -10,6 +10,7 @@ public class FlappyBird extends JFrame {
         this.setLocationRelativeTo(null);
         this.add(game);
         this.pack();
+        this.game.requestFocus();
         this.setVisible(true);
     }
 

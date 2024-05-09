@@ -11,8 +11,9 @@ public class Game extends JPanel implements ActionListener {
     public Game(String backGroundImageName, String birdImageName) {
         this.background = new ImageIcon(backGroundImageName);
         this.bird = new Bird(birdImageName);
-        this.gameLoop = new Timer(1000/10,this);
-        //this.setSize(this.background.getIconWidth(),this.background.getIconHeight());
+        this.setFocusable(true);
+        this.addKeyListener(bird);
+        this.gameLoop = new Timer(1000/30,this);
         this.bird.setBirdX(background.getIconWidth()/8);
         this.bird.setBirdY(background.getIconHeight()/2+ bird.getBirdHeight());
         this.setLayout(new BorderLayout());
@@ -38,7 +39,7 @@ public class Game extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        bird.fall(background);
+        bird.birdMovement(background);
         repaint();
     }
     public int getBackgroundWidth(){
