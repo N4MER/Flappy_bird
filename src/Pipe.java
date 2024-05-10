@@ -1,20 +1,23 @@
 import javax.swing.*;
 
-public class Pipes {
+public class Pipe{
     private int pipeX;
     private int pipeY;
     private int pipeHeight;
     private int pipeWidth;
-    private ImageIcon pipe;
+    private ImageIcon pipeImage;
+    private int moveSpeed = 8;
 
-    public Pipes(int pipeX, int pipeY, String imageName) {
-        this.pipeX = pipeX;
+
+    public Pipe(int pipeY, ImageIcon pipeImage,ImageIcon background) {
+        this.pipeImage = pipeImage;
+        this.pipeHeight = this.pipeImage.getIconHeight();
+        this.pipeWidth = this.pipeImage.getIconWidth();
+        this.pipeX = background.getIconWidth() - pipeWidth;
         this.pipeY = pipeY;
-        this.pipe = new ImageIcon(imageName);
-        pipeHeight = pipe.getIconHeight();
-        pipeWidth = pipe.getIconWidth();
 
     }
+
 
     public int getPipeX() {
         return pipeX;
@@ -48,11 +51,16 @@ public class Pipes {
         this.pipeWidth = pipeWidth;
     }
 
-    public ImageIcon getPipe() {
-        return pipe;
+    public ImageIcon getPipeImage() {
+        return pipeImage;
     }
 
-    public void setPipe(ImageIcon pipe) {
-        this.pipe = pipe;
+    public void setPipeImage(ImageIcon pipeImage) {
+        this.pipeImage = pipeImage;
     }
+
+    public int getMoveSpeed() {
+        return moveSpeed;
+    }
+
 }
