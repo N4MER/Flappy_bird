@@ -7,6 +7,7 @@ public class Pipe{
     private int pipeWidth;
     private ImageIcon pipeImage;
     private int moveSpeed = 8;
+    private boolean passed;
 
 
     public Pipe(int pipeY, ImageIcon pipeImage,ImageIcon background) {
@@ -15,7 +16,7 @@ public class Pipe{
         this.pipeWidth = this.pipeImage.getIconWidth();
         this.pipeX = background.getIconWidth() - pipeWidth;
         this.pipeY = pipeY;
-
+        this.passed = false;
     }
 
 

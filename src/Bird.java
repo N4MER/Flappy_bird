@@ -68,24 +68,35 @@ public class Bird implements KeyListener, MouseListener {
             birdSpeed = -12;
         }
     }
+
     @Override
     public void mousePressed(MouseEvent e) {
-        if(e.getButton() == MouseEvent.BUTTON1) {
+        if (e.getButton() == MouseEvent.BUTTON1) {
             birdSpeed = -12;
         }
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {}
-    @Override
-    public void keyReleased(KeyEvent e) {}
-    @Override
-    public void mouseClicked(MouseEvent e) {}
+    public void keyTyped(KeyEvent e) {
+    }
 
     @Override
-    public void mouseReleased(MouseEvent e) {}
+    public void keyReleased(KeyEvent e) {
+    }
+
     @Override
-    public void mouseEntered(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {
+    }
+
     @Override
-    public void mouseExited(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
 }

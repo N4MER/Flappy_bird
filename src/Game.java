@@ -14,8 +14,9 @@ public class Game extends JPanel implements ActionListener {
     private Timer pipeSpawnRate;
     private ArrayList<Pipe> pipes = new ArrayList<>();
     private Random random;
+    private boolean gameOver;
 
-    public Game(String backGroundImageName, String birdImageName, String bottomPipeImageName,String topPipeImageName) {
+    public Game(String backGroundImageName, String birdImageName, String bottomPipeImageName, String topPipeImageName) {
         this.backgroundImage = new ImageIcon(backGroundImageName);
         this.bird = new Bird(birdImageName);
         this.bottomPipeImage = new ImageIcon(bottomPipeImageName);
@@ -24,11 +25,11 @@ public class Game extends JPanel implements ActionListener {
         this.addKeyListener(bird);
         this.addMouseListener(bird);
         this.random = new Random();
+        this.gameOver = false;
         this.gameLoop = new Timer(1000 / 60, this);
         this.pipeSpawnRate = new Timer(2000, e -> addPipes());
         this.bird.setBirdX(backgroundImage.getIconWidth() / 8);
         this.bird.setBirdY(backgroundImage.getIconHeight() / 2 + bird.getBirdHeight());
-        //this.setLayout(new BorderLayout());
         pipeSpawnRate.start();
         gameLoop.start();
 
@@ -54,28 +55,53 @@ public class Game extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         bird.birdMovement(backgroundImage);
-        repaint();
         moveAllPipes();
         repaint();
+        for (Pipe pipe : pipes) {
+            if (collidedWithPipe(bird, pipe)) {
+                gameOver = true;
+            }
+        }
+        if (isGameOver()) {
+            pipeSpawnRate.stop();
+            gameLoop.stop();
+        }
     }
 
     public void drawPipes(Graphics g) {
         for (Pipe pipe : pipes) {
-            g.drawImage(bottomPipeImage.getImage(), pipe.getPipeX(), pipe.getPipeY(), null);
-            g.drawImage(topPipeImage.getImage(),pipe.getPipeX(),pipe.getPipeY()-120-topPipeImage.getIconHeight(),null);
+            g.drawImage(pipe.getPipeImage().getImage(), pipe.getPipeX(), pipe.getPipeY(), null);
+            //g.drawImage(topPipeImage.getImage(), pipe.getPipeX(), pipe.getPipeY() - 140 - topPipeImage.getIconHeight(), null);
         }
     }
 
     public void addPipes() {
         int randomY = random.nextInt(backgroundImage.getIconHeight());
-        Pipe pipe = new Pipe(randomY, bottomPipeImage, backgroundImage);
-        this.pipes.add(pipe);
+        Pipe bottomPipe = new Pipe(randomY, bottomPipeImage, backgroundImage);
+        Pipe topPipe = new Pipe(bottomPipe.getPipeY() - 140 - topPipeImage.getIconHeight(), topPipeImage, backgroundImage);
+        this.pipes.add(bottomPipe);
+        this.pipes.add(topPipe);
     }
 
     public void moveAllPipes() {
         for (Pipe pipe : pipes) {
-            pipe.setPipeX(pipe.getPipeX()-pipe.getMoveSpeed());
+            pipe.setPipeX(pipe.getPipeX() - pipe.getMoveSpeed());
         }
+    }
+
+    public boolean isGameOver() {
+        if (bird.getBirdY() + bird.getBirdHeight() >= backgroundImage.getIconHeight()) {
+            gameOver = true;
+        }
+        return gameOver;
+    }
+
+    public boolean collidedWithPipe(Bird bird, Pipe pipe) {
+        return bird.getBirdX() < pipe.getPipeX() + pipe.getPipeWidth() &&
+                bird.getBirdX() + bird.getBirdWidth() > pipe.getPipeX() &&
+                bird.getBirdY() < pipe.getPipeY() + pipe.getPipeHeight() &&
+                bird.getBirdY() + bird.getBirdHeight() > pipe.getPipeY();
+
     }
 
 
