@@ -12,15 +12,17 @@ public class Game extends JPanel implements ActionListener {
     private ImageIcon topPipeImage;
     private Timer gameLoop;
     private Timer pipeSpawnRate;
-    private ArrayList<Pipe> pipes = new ArrayList<>();
+    private ArrayList<Pipe> pipes;
     private Random random;
     private boolean gameOver;
+    private int gameSpeed = 8;
 
     public Game(String backGroundImageName, String birdImageName, String bottomPipeImageName, String topPipeImageName) {
         this.backgroundImage = new ImageIcon(backGroundImageName);
         this.bird = new Bird(birdImageName);
         this.bottomPipeImage = new ImageIcon(bottomPipeImageName);
         this.topPipeImage = new ImageIcon(topPipeImageName);
+        this.pipes = new ArrayList<>();
         this.setFocusable(true);
         this.addKeyListener(bird);
         this.addMouseListener(bird);
@@ -66,12 +68,12 @@ public class Game extends JPanel implements ActionListener {
             pipeSpawnRate.stop();
             gameLoop.stop();
         }
+        gameSpeed+=1;
     }
 
     public void drawPipes(Graphics g) {
         for (Pipe pipe : pipes) {
             g.drawImage(pipe.getPipeImage().getImage(), pipe.getPipeX(), pipe.getPipeY(), null);
-            //g.drawImage(topPipeImage.getImage(), pipe.getPipeX(), pipe.getPipeY() - 140 - topPipeImage.getIconHeight(), null);
         }
     }
 
@@ -85,7 +87,7 @@ public class Game extends JPanel implements ActionListener {
 
     public void moveAllPipes() {
         for (Pipe pipe : pipes) {
-            pipe.setPipeX(pipe.getPipeX() - pipe.getMoveSpeed());
+            pipe.setPipeX(pipe.getPipeX() - gameSpeed);
         }
     }
 
@@ -96,6 +98,7 @@ public class Game extends JPanel implements ActionListener {
         return gameOver;
     }
 
+    //copied from internet
     public boolean collidedWithPipe(Bird bird, Pipe pipe) {
         return bird.getBirdX() < pipe.getPipeX() + pipe.getPipeWidth() &&
                 bird.getBirdX() + bird.getBirdWidth() > pipe.getPipeX() &&
