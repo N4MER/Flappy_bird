@@ -14,6 +14,9 @@ public class Game extends JPanel implements ActionListener {
     private Timer pipeSpawnRate;
     private ArrayList<Pipe> pipes;
     private Random random;
+    private int randomY;
+    private int pipeMaxY;
+    private int pipeMinY;
     private boolean gameOver;
     private int gameSpeed = 8;
 
@@ -26,7 +29,10 @@ public class Game extends JPanel implements ActionListener {
         this.setFocusable(true);
         this.addKeyListener(bird);
         this.addMouseListener(bird);
+        this.pipeMaxY = backgroundImage.getIconHeight() - 50;
+        this.pipeMinY = 50;
         this.random = new Random();
+        this.randomY = random.nextInt(backgroundImage.getIconHeight() - pipeMinY) + pipeMinY;
         this.gameOver = false;
         this.gameLoop = new Timer(1000 / 60, this);
         this.pipeSpawnRate = new Timer(2000, e -> addPipes());
@@ -63,12 +69,14 @@ public class Game extends JPanel implements ActionListener {
             if (collidedWithPipe(bird, pipe)) {
                 gameOver = true;
             }
+            if (passedPipe(bird, pipe)) {
+                gameSpeed++;
+            }
         }
         if (isGameOver()) {
             pipeSpawnRate.stop();
             gameLoop.stop();
         }
-        gameSpeed+=1;
     }
 
     public void drawPipes(Graphics g) {
@@ -78,11 +86,19 @@ public class Game extends JPanel implements ActionListener {
     }
 
     public void addPipes() {
-        int randomY = random.nextInt(backgroundImage.getIconHeight());
         Pipe bottomPipe = new Pipe(randomY, bottomPipeImage, backgroundImage);
         Pipe topPipe = new Pipe(bottomPipe.getPipeY() - 140 - topPipeImage.getIconHeight(), topPipeImage, backgroundImage);
         this.pipes.add(bottomPipe);
         this.pipes.add(topPipe);
+        if (bottomPipe.getPipeY() - 50 < pipeMinY && bottomPipe.getPipeY() + 100 > pipeMaxY) {
+            randomY = random.nextInt(pipeMaxY) + pipeMinY;
+        } else if (bottomPipe.getPipeY() + 50 < pipeMinY && bottomPipe.getPipeY() <= pipeMaxY) {
+            randomY = random.nextInt(bottomPipe.getPipeY() + 100) + pipeMinY;
+        }else  if (bottomPipe.getPipeY() + 50 >= pipeMinY && bottomPipe.getPipeY() > pipeMaxY){
+            randomY = random.nextInt(pipeMaxY) + bottomPipe.getPipeY()-50;
+        }else {
+            randomY = random.nextInt(bottomPipe.getPipeY()+100) + bottomPipe.getPipeY()-50;
+        }
     }
 
     public void moveAllPipes() {
@@ -104,6 +120,14 @@ public class Game extends JPanel implements ActionListener {
                 bird.getBirdX() + bird.getBirdWidth() > pipe.getPipeX() &&
                 bird.getBirdY() < pipe.getPipeY() + pipe.getPipeHeight() &&
                 bird.getBirdY() + bird.getBirdHeight() > pipe.getPipeY();
+
+    }
+
+    public boolean passedPipe(Bird bird, Pipe pipe) {
+        return bird.getBirdX() > pipe.getPipeX() + pipe.getPipeWidth() &&
+                bird.getBirdX() + bird.getBirdWidth() < pipe.getPipeX() &&
+                bird.getBirdY() > pipe.getPipeY() + pipe.getPipeHeight() &&
+                bird.getBirdY() + bird.getBirdHeight() < pipe.getPipeY();
 
     }
 
