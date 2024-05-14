@@ -19,6 +19,8 @@ public class Game extends JPanel implements ActionListener {
     private int pipeMinY;
     private boolean gameOver;
     private int gameSpeed = 8;
+    private int pipeGap = 140;
+    private int pipeDifficulty = 50;
 
     public Game(String backGroundImageName, String birdImageName, String bottomPipeImageName, String topPipeImageName) {
         this.backgroundImage = new ImageIcon(backGroundImageName);
@@ -29,10 +31,10 @@ public class Game extends JPanel implements ActionListener {
         this.setFocusable(true);
         this.addKeyListener(bird);
         this.addMouseListener(bird);
-        this.pipeMaxY = backgroundImage.getIconHeight() - 50;
-        this.pipeMinY = 50;
+        this.pipeMaxY = backgroundImage.getIconHeight() - pipeDifficulty;
+        this.pipeMinY = pipeDifficulty + pipeGap;
         this.random = new Random();
-        this.randomY = random.nextInt(backgroundImage.getIconHeight() - pipeMinY) + pipeMinY;
+        this.randomY = random.nextInt(pipeMaxY - pipeMinY) + pipeMinY;
         this.gameOver = false;
         this.gameLoop = new Timer(1000 / 60, this);
         this.pipeSpawnRate = new Timer(2000, e -> addPipes());
@@ -69,9 +71,6 @@ public class Game extends JPanel implements ActionListener {
             if (collidedWithPipe(bird, pipe)) {
                 gameOver = true;
             }
-            if (passedPipe(bird, pipe)) {
-                gameSpeed++;
-            }
         }
         if (isGameOver()) {
             pipeSpawnRate.stop();
@@ -87,17 +86,13 @@ public class Game extends JPanel implements ActionListener {
 
     public void addPipes() {
         Pipe bottomPipe = new Pipe(randomY, bottomPipeImage, backgroundImage);
-        Pipe topPipe = new Pipe(bottomPipe.getPipeY() - 140 - topPipeImage.getIconHeight(), topPipeImage, backgroundImage);
+        Pipe topPipe = new Pipe(bottomPipe.getPipeY() - pipeGap - topPipeImage.getIconHeight(), topPipeImage, backgroundImage);
         this.pipes.add(bottomPipe);
         this.pipes.add(topPipe);
-        if (bottomPipe.getPipeY() - 50 < pipeMinY && bottomPipe.getPipeY() + 100 > pipeMaxY) {
-            randomY = random.nextInt(pipeMaxY) + pipeMinY;
-        } else if (bottomPipe.getPipeY() + 50 < pipeMinY && bottomPipe.getPipeY() <= pipeMaxY) {
-            randomY = random.nextInt(bottomPipe.getPipeY() + 100) + pipeMinY;
-        }else  if (bottomPipe.getPipeY() + 50 >= pipeMinY && bottomPipe.getPipeY() > pipeMaxY){
-            randomY = random.nextInt(pipeMaxY) + bottomPipe.getPipeY()-50;
-        }else {
-            randomY = random.nextInt(bottomPipe.getPipeY()+100) + bottomPipe.getPipeY()-50;
+        if (bottomPipe.getPipeY() - pipeDifficulty - 140 < pipeMinY) {
+            randomY = random.nextInt(2 * pipeDifficulty + pipeGap) + pipeMinY;
+        } else {
+            randomY = random.nextInt(2 * pipeDifficulty + pipeGap) + bottomPipe.getPipeY() - pipeGap - pipeDifficulty;
         }
     }
 

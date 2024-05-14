@@ -44,4 +44,11 @@ public class Pipe {
         return pipeImage;
     }
 
+    public boolean isPassed() {
+        return passed;
+    }
+
+    public void setPassed(boolean passed) {
+        this.passed = passed;
+    }
 }
