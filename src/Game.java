@@ -18,9 +18,14 @@ public class Game extends JPanel implements ActionListener {
     private int pipeMaxY;
     private int pipeMinY;
     private boolean gameOver;
-    private int gameSpeed = 8;
+    private int baseGameSpeed = 8;
+    private int gameSpeed = baseGameSpeed;
+    private int gameIncreaseSize = 5;
+    private int scoreCountForGameSpeedIncrease = 1;
     private int pipeGap = 140;
     private int pipeDifficulty = 50;
+    private int score = 0;
+    private double pipeSpawnDelay = 2000;
 
     public Game(String backGroundImageName, String birdImageName, String bottomPipeImageName, String topPipeImageName) {
         this.backgroundImage = new ImageIcon(backGroundImageName);
@@ -37,7 +42,7 @@ public class Game extends JPanel implements ActionListener {
         this.randomY = random.nextInt(pipeMaxY - pipeMinY) + pipeMinY;
         this.gameOver = false;
         this.gameLoop = new Timer(1000 / 60, this);
-        this.pipeSpawnRate = new Timer(2000, e -> addPipes());
+        this.pipeSpawnRate = new Timer((int) pipeSpawnDelay, e -> addPipes());
         this.bird.setBirdX(backgroundImage.getIconWidth() / 8);
         this.bird.setBirdY(backgroundImage.getIconHeight() / 2 + bird.getBirdHeight());
         pipeSpawnRate.start();
@@ -67,6 +72,12 @@ public class Game extends JPanel implements ActionListener {
         bird.birdMovement(backgroundImage);
         moveAllPipes();
         repaint();
+        checkIfPassed();
+        calculateScore();
+        calculateGameSpeed();
+        calculatePipeSpawnRate();
+    }
+    public void checkIfPassed(){
         for (Pipe pipe : pipes) {
             if (collidedWithPipe(bird, pipe)) {
                 gameOver = true;
@@ -76,6 +87,29 @@ public class Game extends JPanel implements ActionListener {
             pipeSpawnRate.stop();
             gameLoop.stop();
         }
+        for (Pipe pipe : pipes) {
+            pipe.setPassed(true);
+        }
+    }
+
+    public void calculateScore() {
+        score = 0;
+        for (Pipe pipe : pipes) {
+            if (pipe.isPassed()) {
+                score++;
+            }
+        }
+    }
+
+    public void calculateGameSpeed() {
+        double dividedScore = score / scoreCountForGameSpeedIncrease;
+        gameSpeed = baseGameSpeed + (int) Math.floor(dividedScore) * gameIncreaseSize;
+
+    }
+
+    public void calculatePipeSpawnRate() {
+        double spawnDelayReduceVolume = gameIncreaseSize/baseGameSpeed;
+        pipeSpawnDelay = 2000 / spawnDelayReduceVolume;
     }
 
     public void drawPipes(Graphics g) {
@@ -111,18 +145,10 @@ public class Game extends JPanel implements ActionListener {
 
     //copied from internet
     public boolean collidedWithPipe(Bird bird, Pipe pipe) {
-        return bird.getBirdX() < pipe.getPipeX() + pipe.getPipeWidth() &&
-                bird.getBirdX() + bird.getBirdWidth() > pipe.getPipeX() &&
-                bird.getBirdY() < pipe.getPipeY() + pipe.getPipeHeight() &&
-                bird.getBirdY() + bird.getBirdHeight() > pipe.getPipeY();
-
-    }
-
-    public boolean passedPipe(Bird bird, Pipe pipe) {
-        return bird.getBirdX() > pipe.getPipeX() + pipe.getPipeWidth() &&
-                bird.getBirdX() + bird.getBirdWidth() < pipe.getPipeX() &&
-                bird.getBirdY() > pipe.getPipeY() + pipe.getPipeHeight() &&
-                bird.getBirdY() + bird.getBirdHeight() < pipe.getPipeY();
+        return bird.getBirdX() <= pipe.getPipeX() + pipe.getPipeWidth() &&
+                bird.getBirdX() + bird.getBirdWidth() >= pipe.getPipeX() &&
+                bird.getBirdY() <= pipe.getPipeY() + pipe.getPipeHeight() &&
+                bird.getBirdY() + bird.getBirdHeight() >= pipe.getPipeY();
 
     }
 
