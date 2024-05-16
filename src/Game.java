@@ -20,12 +20,14 @@ public class Game extends JPanel implements ActionListener {
     private boolean gameOver;
     private int baseGameSpeed = 8;
     private int gameSpeed = baseGameSpeed;
-    private int gameIncreaseSize = 5;
-    private int scoreCountForGameSpeedIncrease = 1;
-    private int pipeGap = 140;
+    private int gameSpeedIncreaseSize = 1;
+    private int scoreCountForGameSpeedIncrease = 5;
+    private int pipeGap = 250;
     private int pipeDifficulty = 50;
-    private int score = 0;
-    private double pipeSpawnDelay = 2000;
+    private double score = 0;
+    private double basePipeSpawnDelay = 1500;
+    private double pipeSpawnDelay = basePipeSpawnDelay;
+
 
     public Game(String backGroundImageName, String birdImageName, String bottomPipeImageName, String topPipeImageName) {
         this.backgroundImage = new ImageIcon(backGroundImageName);
@@ -77,19 +79,23 @@ public class Game extends JPanel implements ActionListener {
         calculateGameSpeed();
         calculatePipeSpawnRate();
     }
-    public void checkIfPassed(){
+
+    public void checkIfPassed() {
         for (Pipe pipe : pipes) {
             if (collidedWithPipe(bird, pipe)) {
                 gameOver = true;
+            }
+            if (!pipe.isPassed()) {
+                if (passedPipe(bird, pipe)) {
+                    pipe.setPassed(true);
+                }
             }
         }
         if (isGameOver()) {
             pipeSpawnRate.stop();
             gameLoop.stop();
         }
-        for (Pipe pipe : pipes) {
-            pipe.setPassed(true);
-        }
+
     }
 
     public void calculateScore() {
@@ -99,17 +105,19 @@ public class Game extends JPanel implements ActionListener {
                 score++;
             }
         }
+        score=score/2;
     }
 
     public void calculateGameSpeed() {
-        double dividedScore = score / scoreCountForGameSpeedIncrease;
-        gameSpeed = baseGameSpeed + (int) Math.floor(dividedScore) * gameIncreaseSize;
+        double speedIncreaseCount = Math.floor(score / (double) scoreCountForGameSpeedIncrease);
+
+        gameSpeed = baseGameSpeed + ((int) speedIncreaseCount * gameSpeedIncreaseSize);
 
     }
 
     public void calculatePipeSpawnRate() {
-        double spawnDelayReduceVolume = gameIncreaseSize/baseGameSpeed;
-        pipeSpawnDelay = 2000 / spawnDelayReduceVolume;
+        pipeSpawnDelay = basePipeSpawnDelay / ((double)gameSpeed / (double)baseGameSpeed);
+        System.out.println(pipeSpawnDelay);
     }
 
     public void drawPipes(Graphics g) {
@@ -149,7 +157,10 @@ public class Game extends JPanel implements ActionListener {
                 bird.getBirdX() + bird.getBirdWidth() >= pipe.getPipeX() &&
                 bird.getBirdY() <= pipe.getPipeY() + pipe.getPipeHeight() &&
                 bird.getBirdY() + bird.getBirdHeight() >= pipe.getPipeY();
+    }
 
+    public boolean passedPipe(Bird bird, Pipe pipe) {
+        return bird.getBirdX() > pipe.getPipeX() + pipe.getPipeWidth();
     }
 
 
