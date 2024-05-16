@@ -22,7 +22,7 @@ public class Game extends JPanel implements ActionListener {
     private int gameSpeed = baseGameSpeed;
     private int gameSpeedIncreaseSize = 1;
     private int scoreCountForGameSpeedIncrease = 5;
-    private int pipeGap = 250;
+    private int pipeGap = 150;
     private int pipeDifficulty = 50;
     private double score = 0;
     private double basePipeSpawnDelay = 1500;
@@ -105,7 +105,7 @@ public class Game extends JPanel implements ActionListener {
                 score++;
             }
         }
-        score=score/2;
+        score = score / 2;
     }
 
     public void calculateGameSpeed() {
@@ -116,8 +116,8 @@ public class Game extends JPanel implements ActionListener {
     }
 
     public void calculatePipeSpawnRate() {
-        pipeSpawnDelay = basePipeSpawnDelay / ((double)gameSpeed / (double)baseGameSpeed);
-        System.out.println(pipeSpawnDelay);
+        pipeSpawnDelay = basePipeSpawnDelay / ((double) gameSpeed / (double) baseGameSpeed);
+        pipeSpawnRate.setDelay((int) pipeSpawnDelay);
     }
 
     public void drawPipes(Graphics g) {
@@ -131,7 +131,7 @@ public class Game extends JPanel implements ActionListener {
         Pipe topPipe = new Pipe(bottomPipe.getPipeY() - pipeGap - topPipeImage.getIconHeight(), topPipeImage, backgroundImage);
         this.pipes.add(bottomPipe);
         this.pipes.add(topPipe);
-        if (bottomPipe.getPipeY() - pipeDifficulty - 140 < pipeMinY) {
+        if (bottomPipe.getPipeY() - pipeDifficulty - pipeGap < pipeMinY) {
             randomY = random.nextInt(2 * pipeDifficulty + pipeGap) + pipeMinY;
         } else {
             randomY = random.nextInt(2 * pipeDifficulty + pipeGap) + bottomPipe.getPipeY() - pipeGap - pipeDifficulty;
@@ -171,4 +171,5 @@ public class Game extends JPanel implements ActionListener {
     public int getBackgroundHeight() {
         return backgroundImage.getIconHeight();
     }
+
 }
