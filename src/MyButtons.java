@@ -1,7 +1,6 @@
 import javax.swing.*;
 public abstract class MyButtons extends JButton{
     public MyButtons(Game game) {
-        this.setSize(game.getSize());
         this.setOpaque(false);
         this.setContentAreaFilled(false);
         this.setBorderPainted(false);
