@@ -1,5 +1,6 @@
 import javax.swing.*;
-public abstract class MyButtons extends JButton{
+
+public abstract class MyButtons extends JButton {
     public MyButtons(Game game) {
         setBounds(0, 0, game.getBackgroundWidth(), game.getBackgroundHeight());
         setOpaque(false);
@@ -17,7 +18,7 @@ public abstract class MyButtons extends JButton{
         });
     }
 
-    public void performedActionOnPress( Game game) {
+    public void performedActionOnPress(Game game) {
 
     }
 

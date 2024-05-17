@@ -1,5 +1,4 @@
-public class ResetButton extends MyButtons{
-
+public class ResetButton extends MyButtons {
     public ResetButton(Game game) {
         super(game);
         setText("press to restart game");
@@ -10,7 +9,6 @@ public class ResetButton extends MyButtons{
         super.performedActionOnPress(game);
         //game.remove(this);
         game.resetGame();
-
 
 
     }

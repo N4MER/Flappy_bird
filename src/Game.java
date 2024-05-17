@@ -30,9 +30,9 @@ public class Game extends JPanel implements ActionListener {
     private StartButton startButton;
     private ResetButton resetButton;
 
-    public Game(String backGroundImageName, String birdImageName, String bottomPipeImageName, String topPipeImageName) {
+    public Game(String backGroundImageName, String birdImageName,String birdFallingImageName, String birdSemiFallingImageName, String birdJumpImageName, String bottomPipeImageName, String topPipeImageName) {
         backgroundImage = new ImageIcon(backGroundImageName);
-        bird = new Bird(birdImageName);
+        bird = new Bird(birdImageName,birdFallingImageName,birdSemiFallingImageName,birdJumpImageName);
         bottomPipeImage = new ImageIcon(bottomPipeImageName);
         topPipeImage = new ImageIcon(topPipeImageName);
         pipes = new ArrayList<>();
@@ -67,7 +67,6 @@ public class Game extends JPanel implements ActionListener {
         g.drawImage(bird.getBirdImage().getImage(), bird.getBirdX(), bird.getBirdY(), null);
         drawPipes(g);
     }
-
 
 
     @Override
@@ -146,7 +145,6 @@ public class Game extends JPanel implements ActionListener {
     }
 
 
-
     //copied from internet
     public boolean collidedWithPipe(Bird bird, Pipe pipe) {
         return bird.getBirdX() <= pipe.getPipeX() + pipe.getPipeWidth() &&
@@ -169,6 +167,7 @@ public class Game extends JPanel implements ActionListener {
     public void resetGame() {
         repaint();
         bird.setBirdSpeed(bird.getBirdBaseSpeed());
+        bird.setBirdImage(bird.getNormalBirdImage());
         gameSpeed = baseGameSpeed;
         pipeSpawnDelay = basePipeSpawnDelay;
         bird.setBirdY(backgroundImage.getIconHeight() / 2 + bird.getBirdHeight());
@@ -180,6 +179,7 @@ public class Game extends JPanel implements ActionListener {
         add(startButton);
         remove(resetButton);
     }
+
     public int getBackgroundWidth() {
         return backgroundImage.getIconWidth();
     }
@@ -187,6 +187,7 @@ public class Game extends JPanel implements ActionListener {
     public int getBackgroundHeight() {
         return backgroundImage.getIconHeight();
     }
+
     public boolean isGameOver() {
         if (bird.getBirdY() + bird.getBirdHeight() >= backgroundImage.getIconHeight()) {
             gameOver = true;
@@ -194,6 +195,7 @@ public class Game extends JPanel implements ActionListener {
         }
         return gameOver;
     }
+
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(getBackgroundWidth(), getBackgroundHeight());
