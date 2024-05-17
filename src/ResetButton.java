@@ -7,7 +7,6 @@ public class ResetButton extends MyButtons {
     @Override
     public void performedActionOnPress(Game game) {
         super.performedActionOnPress(game);
-        //game.remove(this);
         game.resetGame();
 
 

@@ -29,7 +29,7 @@ public class Bird implements KeyListener, MouseListener {
     }
 
     public void birdMovement(ImageIcon background) {
-        birdSpeed += gravity;
+        fall();
         changeBirdImage();
         if (background.getIconHeight() - birdY - birdHeight < birdSpeed) {
             birdY = background.getIconHeight() - birdHeight;
@@ -40,6 +40,9 @@ public class Bird implements KeyListener, MouseListener {
             birdY += birdSpeed;
         }
 
+    }
+    public void fall(){
+        birdSpeed += gravity;
     }
 
     public void jump() {

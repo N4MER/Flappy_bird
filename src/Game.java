@@ -24,15 +24,15 @@ public class Game extends JPanel implements ActionListener {
     private int scoreCountForGameSpeedIncrease = 5;
     private int pipeGap = 150;
     private int pipeDifficulty = 50;
-    private double score = 0;
+    private int score = 0;
     private double basePipeSpawnDelay = 1500;
     private double pipeSpawnDelay = basePipeSpawnDelay;
     private StartButton startButton;
     private ResetButton resetButton;
 
-    public Game(String backGroundImageName, String birdImageName,String birdFallingImageName, String birdSemiFallingImageName, String birdJumpImageName, String bottomPipeImageName, String topPipeImageName) {
+    public Game(String backGroundImageName, String birdImageName, String birdFallingImageName, String birdSemiFallingImageName, String birdJumpImageName, String bottomPipeImageName, String topPipeImageName) {
         backgroundImage = new ImageIcon(backGroundImageName);
-        bird = new Bird(birdImageName,birdFallingImageName,birdSemiFallingImageName,birdJumpImageName);
+        bird = new Bird(birdImageName, birdFallingImageName, birdSemiFallingImageName, birdJumpImageName);
         bottomPipeImage = new ImageIcon(bottomPipeImageName);
         topPipeImage = new ImageIcon(topPipeImageName);
         pipes = new ArrayList<>();
@@ -40,13 +40,13 @@ public class Game extends JPanel implements ActionListener {
         pipeSpawnRate = new Timer((int) pipeSpawnDelay, e -> addPipes());
         startButton = new StartButton(this);
         resetButton = new ResetButton(this);
+        random = new Random();
         setLayout(null);
         setFocusable(true);
         addKeyListener(bird);
         addMouseListener(bird);
         pipeMaxY = backgroundImage.getIconHeight() - pipeDifficulty;
         pipeMinY = pipeDifficulty + pipeGap;
-        random = new Random();
         randomY = random.nextInt(pipeMaxY - pipeMinY) + pipeMinY;
         gameOver = false;
         bird.setBirdX(backgroundImage.getIconWidth() / 8);
@@ -66,6 +66,9 @@ public class Game extends JPanel implements ActionListener {
         g.drawImage(backgroundImage.getImage(), 0, 0, null);
         g.drawImage(bird.getBirdImage().getImage(), bird.getBirdX(), bird.getBirdY(), null);
         drawPipes(g);
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial", Font.PLAIN, 46));
+        g.drawString("Score: " + score, 0, 35);
     }
 
 
@@ -110,7 +113,7 @@ public class Game extends JPanel implements ActionListener {
     }
 
     public void calculateGameSpeed() {
-        double speedIncreaseCount = Math.floor(score / (double) scoreCountForGameSpeedIncrease);
+        double speedIncreaseCount = Math.floor((double) score / (double) scoreCountForGameSpeedIncrease);
         gameSpeed = baseGameSpeed + ((int) speedIncreaseCount * gameSpeedIncreaseSize);
 
     }
