@@ -63,9 +63,6 @@ public class Bird implements KeyListener, MouseListener {
         this.birdY = birdY;
     }
 
-    public int getBirdSpeed() {
-        return birdSpeed;
-    }
 
     public void setBirdSpeed(int birdSpeed) {
         this.birdSpeed = birdSpeed;
@@ -74,18 +71,21 @@ public class Bird implements KeyListener, MouseListener {
     public int getBirdBaseSpeed() {
         return birdBaseSpeed;
     }
+    public void jump(){
+        birdSpeed = -12;
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            birdSpeed = -12;
+            jump();
         }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
-            birdSpeed = -12;
+            jump();
         }
     }
 

@@ -68,10 +68,7 @@ public class Game extends JPanel implements ActionListener {
         drawPipes(g);
     }
 
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(getBackgroundWidth(), getBackgroundHeight());
-    }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -148,12 +145,7 @@ public class Game extends JPanel implements ActionListener {
         }
     }
 
-    public boolean isGameOver() {
-        if (bird.getBirdY() + bird.getBirdHeight() >= backgroundImage.getIconHeight()) {
-            gameOver = true;
-        }
-        return gameOver;
-    }
+
 
     //copied from internet
     public boolean collidedWithPipe(Bird bird, Pipe pipe) {
@@ -167,19 +159,11 @@ public class Game extends JPanel implements ActionListener {
         return bird.getBirdX() > pipe.getPipeX() + pipe.getPipeWidth();
     }
 
-
-    public int getBackgroundWidth() {
-        return backgroundImage.getIconWidth();
-    }
-
-    public int getBackgroundHeight() {
-        return backgroundImage.getIconHeight();
-    }
-
     public void startGame() {
         remove(startButton);
         pipeSpawnRate.start();
         gameLoop.start();
+        bird.jump();
     }
 
     public void resetGame() {
@@ -196,5 +180,22 @@ public class Game extends JPanel implements ActionListener {
         add(startButton);
         remove(resetButton);
     }
+    public int getBackgroundWidth() {
+        return backgroundImage.getIconWidth();
+    }
 
+    public int getBackgroundHeight() {
+        return backgroundImage.getIconHeight();
+    }
+    public boolean isGameOver() {
+        if (bird.getBirdY() + bird.getBirdHeight() >= backgroundImage.getIconHeight()) {
+            gameOver = true;
+
+        }
+        return gameOver;
+    }
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(getBackgroundWidth(), getBackgroundHeight());
+    }
 }
