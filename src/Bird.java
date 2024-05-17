@@ -10,7 +10,8 @@ public class Bird implements KeyListener, MouseListener {
     private int birdWidth;
     private int birdX;
     private int birdY;
-    private int birdSpeed = 0;
+    private int birdBaseSpeed;
+    private int birdSpeed = birdBaseSpeed;
     private int gravity = 1;
 
     public Bird(String birdImageName) {
@@ -60,6 +61,18 @@ public class Bird implements KeyListener, MouseListener {
 
     public void setBirdY(int birdY) {
         this.birdY = birdY;
+    }
+
+    public int getBirdSpeed() {
+        return birdSpeed;
+    }
+
+    public void setBirdSpeed(int birdSpeed) {
+        this.birdSpeed = birdSpeed;
+    }
+
+    public int getBirdBaseSpeed() {
+        return birdBaseSpeed;
     }
 
     @Override

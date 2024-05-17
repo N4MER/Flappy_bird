@@ -28,32 +28,30 @@ public class Game extends JPanel implements ActionListener {
     private double basePipeSpawnDelay = 1500;
     private double pipeSpawnDelay = basePipeSpawnDelay;
     private StartButton startButton;
+    private ResetButton resetButton;
 
     public Game(String backGroundImageName, String birdImageName, String bottomPipeImageName, String topPipeImageName) {
-        this.backgroundImage = new ImageIcon(backGroundImageName);
-        this.bird = new Bird(birdImageName);
-        this.bottomPipeImage = new ImageIcon(bottomPipeImageName);
-        this.topPipeImage = new ImageIcon(topPipeImageName);
-        this.pipes = new ArrayList<>();
-        this.gameLoop = new Timer(1000 / 60, this);
-        this.pipeSpawnRate = new Timer((int) pipeSpawnDelay, e -> addPipes());
-        this.startButton = new StartButton(this);
-
+        backgroundImage = new ImageIcon(backGroundImageName);
+        bird = new Bird(birdImageName);
+        bottomPipeImage = new ImageIcon(bottomPipeImageName);
+        topPipeImage = new ImageIcon(topPipeImageName);
+        pipes = new ArrayList<>();
+        gameLoop = new Timer(1000 / 60, this);
+        pipeSpawnRate = new Timer((int) pipeSpawnDelay, e -> addPipes());
+        startButton = new StartButton(this);
+        resetButton = new ResetButton(this);
         setLayout(null);
-        this.setFocusable(true);
-        this.addKeyListener(bird);
-        this.addMouseListener(bird);
-        this.pipeMaxY = backgroundImage.getIconHeight() - pipeDifficulty;
-        this.pipeMinY = pipeDifficulty + pipeGap;
-        this.random = new Random();
-        this.randomY = random.nextInt(pipeMaxY - pipeMinY) + pipeMinY;
-        this.gameOver = false;
-
-        this.bird.setBirdX(backgroundImage.getIconWidth() / 8);
-        this.bird.setBirdY(backgroundImage.getIconHeight() / 2 + bird.getBirdHeight());
-        startButton.setBounds(0,0,getBackgroundWidth(),getBackgroundHeight());
-        this.add(startButton);
-
+        setFocusable(true);
+        addKeyListener(bird);
+        addMouseListener(bird);
+        pipeMaxY = backgroundImage.getIconHeight() - pipeDifficulty;
+        pipeMinY = pipeDifficulty + pipeGap;
+        random = new Random();
+        randomY = random.nextInt(pipeMaxY - pipeMinY) + pipeMinY;
+        gameOver = false;
+        bird.setBirdX(backgroundImage.getIconWidth() / 8);
+        bird.setBirdY(backgroundImage.getIconHeight() / 2 + bird.getBirdHeight());
+        add(startButton);
         repaint();
 
     }
@@ -100,6 +98,7 @@ public class Game extends JPanel implements ActionListener {
         if (isGameOver()) {
             pipeSpawnRate.stop();
             gameLoop.stop();
+            this.add(resetButton);
         }
 
     }
@@ -116,7 +115,6 @@ public class Game extends JPanel implements ActionListener {
 
     public void calculateGameSpeed() {
         double speedIncreaseCount = Math.floor(score / (double) scoreCountForGameSpeedIncrease);
-
         gameSpeed = baseGameSpeed + ((int) speedIncreaseCount * gameSpeedIncreaseSize);
 
     }
@@ -179,9 +177,24 @@ public class Game extends JPanel implements ActionListener {
     }
 
     public void startGame() {
+        remove(startButton);
         pipeSpawnRate.start();
         gameLoop.start();
     }
 
+    public void resetGame() {
+        repaint();
+        bird.setBirdSpeed(bird.getBirdBaseSpeed());
+        gameSpeed = baseGameSpeed;
+        pipeSpawnDelay = basePipeSpawnDelay;
+        bird.setBirdY(backgroundImage.getIconHeight() / 2 + bird.getBirdHeight());
+        randomY = random.nextInt(pipeMaxY - pipeMinY) + pipeMinY;
+        gameOver = false;
+        pipes.clear();
+        pipeSpawnRate.stop();
+        gameLoop.stop();
+        add(startButton);
+        remove(resetButton);
+    }
 
 }

@@ -8,13 +8,13 @@ public class FlappyBird extends JFrame {
         game = new Game(backgroundImageName, birdImageName, bottomPipeImageName, topPipeImageName);
         //this.setResizable(false);
         setSize(game.getBackgroundWidth(), game.getBackgroundHeight());
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setLocationRelativeTo(null);
-        this.setLayout(null);
-        this.add(game);
-        this.setComponentZOrder(game, 0);
-        this.pack();
-        this.setVisible(true);
-        this.game.requestFocus();
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(null);
+        add(game);
+        setComponentZOrder(game, 0);
+        pack();
+        setVisible(true);
+        game.requestFocus();
     }
 }

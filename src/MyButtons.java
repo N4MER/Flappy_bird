@@ -1,11 +1,12 @@
 import javax.swing.*;
 public abstract class MyButtons extends JButton{
     public MyButtons(Game game) {
-        this.setOpaque(false);
-        this.setContentAreaFilled(false);
-        this.setBorderPainted(false);
-        this.setFocusable(false);
-        this.myAddActionListener(game);
+        setBounds(0, 0, game.getBackgroundWidth(), game.getBackgroundHeight());
+        setOpaque(false);
+        setContentAreaFilled(false);
+        setBorderPainted(false);
+        setFocusable(false);
+        myAddActionListener(game);
     }
 
     public void myAddActionListener(Game game) {
