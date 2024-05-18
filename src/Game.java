@@ -12,18 +12,19 @@ public class Game extends JPanel implements ActionListener {
     private ImageIcon topPipeImage;
     private Timer gameLoop;
     private Timer pipeSpawnRate;
-    private ArrayList<Pipe> pipes;
-    private Random random;
+    private ArrayList<Pipe> pipes = new ArrayList<>();
+    private Random random = new Random();
     private int randomY;
+    private int randomPipe;
     private int pipeMaxY;
     private int pipeMinY;
-    private boolean gameOver;
+    private boolean gameOver = false;
     private int baseGameSpeed = 8;
     private int gameSpeed = baseGameSpeed;
     private int gameSpeedIncreaseSize = 1;
     private int scoreCountForGameSpeedIncrease = 5;
     private int pipeGap = 150;
-    private int pipeDifficulty = 100;
+    private int pipeDifficulty = 80;
     private int score = 0;
     private double basePipeSpawnDelay = 1500;
     private double pipeSpawnDelay = basePipeSpawnDelay;
@@ -35,20 +36,17 @@ public class Game extends JPanel implements ActionListener {
         bird = new Bird(birdImageName, birdFallingImageName, birdSemiFallingImageName, birdJumpImageName);
         bottomPipeImage = new ImageIcon(bottomPipeImageName);
         topPipeImage = new ImageIcon(topPipeImageName);
-        pipes = new ArrayList<>();
         gameLoop = new Timer(1000 / 60, this);
         pipeSpawnRate = new Timer((int) pipeSpawnDelay, e -> addPipes());
         startButton = new StartButton(this);
         resetButton = new ResetButton(this);
-        random = new Random();
         setLayout(null);
         setFocusable(true);
         addKeyListener(bird);
         addMouseListener(bird);
-        pipeMaxY = backgroundImage.getIconHeight() - 50;
-        pipeMinY = 50;
+        pipeMaxY = backgroundImage.getIconHeight() - pipeDifficulty;
+        pipeMinY = pipeDifficulty;
         randomY = random.nextInt(pipeMaxY - pipeGap - pipeMinY) + pipeMinY + pipeGap;
-        gameOver = false;
         bird.setBirdX(backgroundImage.getIconWidth() / 8);
         bird.setBirdY(backgroundImage.getIconHeight() / 2 + bird.getBirdHeight());
         add(startButton);
@@ -66,7 +64,7 @@ public class Game extends JPanel implements ActionListener {
         g.drawImage(bird.getBirdImage().getImage(), bird.getBirdX(), bird.getBirdY(), null);
         drawPipes(g);
         g.setColor(Color.BLACK);
-        g.setFont(new Font("Arial", Font.PLAIN, 46));
+        g.setFont(new Font("Arial", Font.PLAIN, 32));
         g.drawString("Score: " + score, 0, 35);
     }
 
@@ -125,20 +123,23 @@ public class Game extends JPanel implements ActionListener {
         }
     }
 
-    //private int pipeIndex = 0;
-
     public void addPipes() {
         randomY = random.nextInt(pipeMaxY - pipeGap - pipeMinY) + pipeMinY + pipeGap;
-        Pipe bottomPipe = new Pipe(randomY, bottomPipeImage, backgroundImage);
-        Pipe topPipe = new Pipe(bottomPipe.getPipeY() - pipeGap - topPipeImage.getIconHeight(), topPipeImage, backgroundImage);
+        if (score <= 5) {
+            randomPipe = 1;
+        } else {
+            randomPipe = random.nextInt(3) + 1;
+        }
+        Pipe bottomPipe = CreatePipes.createPipes(randomPipe, randomY, topPipeImage, bottomPipeImage, backgroundImage, this).getBottomPipe();
+        Pipe topPipe = CreatePipes.createPipes(randomPipe, bottomPipe.getPipeY() - pipeGap - topPipeImage.getIconHeight(), topPipeImage, bottomPipeImage, backgroundImage, this).getTopPipe();
         pipes.add(bottomPipe);
         pipes.add(topPipe);
-
     }
 
     public void moveAllPipes() {
         for (Pipe pipe : pipes) {
-            pipe.setPipeX(pipe.getPipeX() - gameSpeed);
+            pipe.move(gameSpeed);
+            pipe.moveUp();
         }
     }
 
@@ -193,6 +194,14 @@ public class Game extends JPanel implements ActionListener {
             gameOver = true;
         }
         return gameOver;
+    }
+
+    public int getPipeMinY() {
+        return pipeMinY;
+    }
+
+    public int getPipeMaxY() {
+        return pipeMaxY;
     }
 
     @Override

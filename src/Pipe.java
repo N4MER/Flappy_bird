@@ -19,6 +19,9 @@ public class Pipe {
         this.passed = false;
     }
 
+    public void moveUp() {
+    }
+
 
     public int getPipeX() {
         return pipeX;
@@ -51,4 +54,13 @@ public class Pipe {
     public void setPassed(boolean passed) {
         this.passed = passed;
     }
+
+    public void setPipeY(int pipeY) {
+        this.pipeY = pipeY;
+    }
+
+    public void move(int gameSpeed) {
+        pipeX -= gameSpeed;
+    }
+
 }
