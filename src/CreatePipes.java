@@ -13,7 +13,7 @@ public class CreatePipes {
             case 3:
                 return new PipePair(new Pipe(pipeY, topPipeImage, background), new Pipe(pipeY, bottomPipeImage, background));
             default:
-                throw new InputMismatchException("Pipe for this number does not exist");
+                return  null;
         }
     }
 }
