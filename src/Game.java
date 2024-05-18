@@ -23,7 +23,7 @@ public class Game extends JPanel implements ActionListener {
     private int gameSpeedIncreaseSize = 1;
     private int scoreCountForGameSpeedIncrease = 5;
     private int pipeGap = 150;
-    private int pipeDifficulty = 50;
+    private int pipeDifficulty = 100;
     private int score = 0;
     private double basePipeSpawnDelay = 1500;
     private double pipeSpawnDelay = basePipeSpawnDelay;
@@ -45,15 +45,14 @@ public class Game extends JPanel implements ActionListener {
         setFocusable(true);
         addKeyListener(bird);
         addMouseListener(bird);
-        pipeMaxY = backgroundImage.getIconHeight() - pipeDifficulty;
-        pipeMinY = pipeDifficulty + pipeGap;
-        randomY = random.nextInt(pipeMaxY - pipeMinY) + pipeMinY;
+        pipeMaxY = backgroundImage.getIconHeight() - 50;
+        pipeMinY = 50;
+        randomY = random.nextInt(pipeMaxY - pipeGap - pipeMinY) + pipeMinY + pipeGap;
         gameOver = false;
         bird.setBirdX(backgroundImage.getIconWidth() / 8);
         bird.setBirdY(backgroundImage.getIconHeight() / 2 + bird.getBirdHeight());
         add(startButton);
         repaint();
-
     }
 
     @Override
@@ -70,7 +69,6 @@ public class Game extends JPanel implements ActionListener {
         g.setFont(new Font("Arial", Font.PLAIN, 46));
         g.drawString("Score: " + score, 0, 35);
     }
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -99,7 +97,6 @@ public class Game extends JPanel implements ActionListener {
             gameLoop.stop();
             this.add(resetButton);
         }
-
     }
 
     public void calculateScore() {
@@ -115,7 +112,6 @@ public class Game extends JPanel implements ActionListener {
     public void calculateGameSpeed() {
         double speedIncreaseCount = Math.floor((double) score / (double) scoreCountForGameSpeedIncrease);
         gameSpeed = baseGameSpeed + ((int) speedIncreaseCount * gameSpeedIncreaseSize);
-
     }
 
     public void calculatePipeSpawnRate() {
@@ -129,16 +125,15 @@ public class Game extends JPanel implements ActionListener {
         }
     }
 
+    //private int pipeIndex = 0;
+
     public void addPipes() {
+        randomY = random.nextInt(pipeMaxY - pipeGap - pipeMinY) + pipeMinY + pipeGap;
         Pipe bottomPipe = new Pipe(randomY, bottomPipeImage, backgroundImage);
         Pipe topPipe = new Pipe(bottomPipe.getPipeY() - pipeGap - topPipeImage.getIconHeight(), topPipeImage, backgroundImage);
-        this.pipes.add(bottomPipe);
-        this.pipes.add(topPipe);
-        if (bottomPipe.getPipeY() - pipeDifficulty - pipeGap < pipeMinY) {
-            randomY = random.nextInt(2 * pipeDifficulty + pipeGap) + pipeMinY;
-        } else {
-            randomY = random.nextInt(2 * pipeDifficulty + pipeGap) + bottomPipe.getPipeY() - pipeGap - pipeDifficulty;
-        }
+        pipes.add(bottomPipe);
+        pipes.add(topPipe);
+
     }
 
     public void moveAllPipes() {
@@ -147,8 +142,7 @@ public class Game extends JPanel implements ActionListener {
         }
     }
 
-
-    //copied from internet
+    // copied from internet
     public boolean collidedWithPipe(Bird bird, Pipe pipe) {
         return bird.getBirdX() <= pipe.getPipeX() + pipe.getPipeWidth() &&
                 bird.getBirdX() + bird.getBirdWidth() >= pipe.getPipeX() &&
@@ -162,6 +156,10 @@ public class Game extends JPanel implements ActionListener {
 
     public void startGame() {
         remove(startButton);
+        Pipe bottomPipe = new Pipe(randomY, bottomPipeImage, backgroundImage);
+        Pipe topPipe = new Pipe(bottomPipe.getPipeY() - pipeGap - topPipeImage.getIconHeight(), topPipeImage, backgroundImage);
+        pipes.add(bottomPipe);
+        pipes.add(topPipe);
         pipeSpawnRate.start();
         gameLoop.start();
         bird.jump();
@@ -174,7 +172,6 @@ public class Game extends JPanel implements ActionListener {
         gameSpeed = baseGameSpeed;
         pipeSpawnDelay = basePipeSpawnDelay;
         bird.setBirdY(backgroundImage.getIconHeight() / 2 + bird.getBirdHeight());
-        randomY = random.nextInt(pipeMaxY - pipeMinY) + pipeMinY;
         gameOver = false;
         pipes.clear();
         pipeSpawnRate.stop();
@@ -194,7 +191,6 @@ public class Game extends JPanel implements ActionListener {
     public boolean isGameOver() {
         if (bird.getBirdY() + bird.getBirdHeight() >= backgroundImage.getIconHeight()) {
             gameOver = true;
-
         }
         return gameOver;
     }
@@ -204,3 +200,4 @@ public class Game extends JPanel implements ActionListener {
         return new Dimension(getBackgroundWidth(), getBackgroundHeight());
     }
 }
+
