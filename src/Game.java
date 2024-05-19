@@ -30,6 +30,7 @@ public class Game extends JPanel implements ActionListener {
     private double pipeSpawnDelay = basePipeSpawnDelay;
     private StartButton startButton;
     private ResetButton resetButton;
+    private int randomDirection;
 
     public Game(String backGroundImageName, String birdImageName, String birdFallingImageName, String birdSemiFallingImageName, String birdJumpImageName, String bottomPipeImageName, String topPipeImageName) {
         backgroundImage = new ImageIcon(backGroundImageName);
@@ -125,21 +126,21 @@ public class Game extends JPanel implements ActionListener {
 
     public void addPipes() {
         randomY = random.nextInt(pipeMaxY - pipeGap - pipeMinY) + pipeMinY + pipeGap;
-        if (score <= 5) {
+        randomDirection = random.nextInt(2) + 1;
+        if (score <= 1) {
             randomPipe = 1;
         } else {
             randomPipe = random.nextInt(3) + 1;
         }
-        Pipe bottomPipe = CreatePipes.createPipes(randomPipe, randomY, topPipeImage, bottomPipeImage, backgroundImage, this).getBottomPipe();
-        Pipe topPipe = CreatePipes.createPipes(randomPipe, bottomPipe.getPipeY() - pipeGap - topPipeImage.getIconHeight(), topPipeImage, bottomPipeImage, backgroundImage, this).getTopPipe();
+        Pipe bottomPipe = CreatePipes.createPipes(randomPipe, randomY, topPipeImage, bottomPipeImage, backgroundImage, this, false, randomDirection).getBottomPipe();
+        Pipe topPipe = CreatePipes.createPipes(randomPipe, bottomPipe.getPipeY() - pipeGap - topPipeImage.getIconHeight(), topPipeImage, bottomPipeImage, backgroundImage, this, true, randomDirection).getTopPipe();
         pipes.add(bottomPipe);
         pipes.add(topPipe);
     }
 
     public void moveAllPipes() {
         for (Pipe pipe : pipes) {
-            pipe.move(gameSpeed);
-            pipe.moveUp();
+            pipe.move(this);
         }
     }
 
@@ -157,8 +158,9 @@ public class Game extends JPanel implements ActionListener {
 
     public void startGame() {
         remove(startButton);
-        Pipe bottomPipe = new Pipe(randomY, bottomPipeImage, backgroundImage);
-        Pipe topPipe = new Pipe(bottomPipe.getPipeY() - pipeGap - topPipeImage.getIconHeight(), topPipeImage, backgroundImage);
+        randomDirection = random.nextInt(2) + 1;
+        Pipe bottomPipe = new Pipe(randomY, bottomPipeImage, backgroundImage, this, false, randomDirection);
+        Pipe topPipe = new Pipe(bottomPipe.getPipeY() - pipeGap - topPipeImage.getIconHeight(), topPipeImage, backgroundImage, this, true, randomDirection);
         pipes.add(bottomPipe);
         pipes.add(topPipe);
         pipeSpawnRate.start();
@@ -202,6 +204,14 @@ public class Game extends JPanel implements ActionListener {
 
     public int getPipeMaxY() {
         return pipeMaxY;
+    }
+
+    public int getGameSpeed() {
+        return gameSpeed;
+    }
+
+    public int getPipeGap() {
+        return pipeGap;
     }
 
     @Override

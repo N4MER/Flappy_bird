@@ -1,19 +1,16 @@
 import javax.swing.*;
-import java.util.InputMismatchException;
 
 public class CreatePipes {
-    private PipePair pipePair;
 
-    public static PipePair createPipes(int pipe, int pipeY, ImageIcon topPipeImage, ImageIcon bottomPipeImage, ImageIcon background, Game game) {
+    public static PipePair createPipes(int pipe, int pipeY, ImageIcon topPipeImage, ImageIcon bottomPipeImage, ImageIcon background, Game game, boolean isTopPipe, int randomDirection) {
         switch (pipe) {
             case 1:
-                return new PipePair(new Pipe(pipeY, topPipeImage, background), new Pipe(pipeY, bottomPipeImage, background));
-            case 2:
-                return new PipePair(new MovingPipe(pipeY, topPipeImage, background, game), new MovingPipe(pipeY, bottomPipeImage, background, game));
             case 3:
-                return new PipePair(new Pipe(pipeY, topPipeImage, background), new Pipe(pipeY, bottomPipeImage, background));
+                return new PipePair(new Pipe(pipeY, topPipeImage, background, game, isTopPipe, randomDirection), new Pipe(pipeY, bottomPipeImage, background, game, isTopPipe, randomDirection));
+            case 2:
+                return new PipePair(new MovingPipe(pipeY, topPipeImage, background, game, isTopPipe, randomDirection), new MovingPipe(pipeY, bottomPipeImage, background, game, isTopPipe, randomDirection));
             default:
-                return  null;
+                return null;
         }
     }
 }

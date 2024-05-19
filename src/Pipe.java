@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.util.Random;
 
 public class Pipe {
     private int pipeX;
@@ -6,29 +7,78 @@ public class Pipe {
     private int pipeHeight;
     private int pipeWidth;
     private ImageIcon pipeImage;
+    private int xUpperLimit;
+    private int xBottomLimit;
+    private Direction direction;
+    private int xMoveVolume;
+    private boolean isTopPipe;
 
     private boolean passed;
+    private int randomDirection;
 
 
-    public Pipe(int pipeY, ImageIcon pipeImage, ImageIcon background) {
+    public Pipe(int pipeY, ImageIcon pipeImage, ImageIcon background, Game game, boolean isTopPipe, int randomDirection) {
         this.pipeImage = pipeImage;
-        this.pipeHeight = this.pipeImage.getIconHeight();
-        this.pipeWidth = this.pipeImage.getIconWidth();
-        this.pipeX = background.getIconWidth() - pipeWidth;
+        pipeHeight = pipeImage.getIconHeight();
+        pipeWidth = pipeImage.getIconWidth();
+        pipeX = background.getIconWidth() - pipeWidth;
         this.pipeY = pipeY;
-        this.passed = false;
+        xUpperLimit = game.getPipeMinY();
+        xBottomLimit = game.getPipeMaxY();
+        direction = Direction.DOWN;
+        xMoveVolume = 1;
+        setFirstDirection(randomDirection);
+        this.isTopPipe = isTopPipe;
+        passed = false;
+    }
+
+    public void setFirstDirection(int randomDirection) {
+        if (randomDirection == 1) {
+            direction = Direction.DOWN;
+        } else {
+            direction = Direction.UP;
+        }
     }
 
     public void moveUp() {
     }
 
+    public void moveDown() {
+    }
+
+    public void move(Game game) {
+        if (!isTopPipe) {
+            if (pipeY - xMoveVolume - game.getPipeGap() < xUpperLimit) {
+                direction = Direction.DOWN;
+            } else if (pipeY + xMoveVolume > xBottomLimit) {
+                direction = Direction.UP;
+            }
+            chooseDirection();
+        } else {
+            if (pipeY - xMoveVolume + pipeImage.getIconHeight() < xUpperLimit) {
+                direction = Direction.DOWN;
+            } else if (pipeY + game.getPipeGap() + pipeImage.getIconHeight() + xMoveVolume > xBottomLimit) {
+                direction = Direction.UP;
+            }
+            chooseDirection();
+        }
+        moveForward(game.getGameSpeed());
+    }
+
+    public void chooseDirection() {
+        if (direction.equals(Direction.DOWN)) {
+            moveDown();
+        } else if (direction.equals(Direction.UP)) {
+            moveUp();
+        }
+    }
+
+    public void moveForward(int gameSpeed) {
+        pipeX -= gameSpeed;
+    }
 
     public int getPipeX() {
         return pipeX;
-    }
-
-    public void setPipeX(int pipeX) {
-        this.pipeX = pipeX;
     }
 
     public int getPipeY() {
@@ -59,8 +109,5 @@ public class Pipe {
         this.pipeY = pipeY;
     }
 
-    public void move(int gameSpeed) {
-        pipeX -= gameSpeed;
-    }
 
 }

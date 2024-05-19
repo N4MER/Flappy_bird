@@ -1,18 +1,19 @@
 import javax.swing.*;
 
 public class MovingPipe extends Pipe {
-    private int xUpperLimit;
-    private int xBottomLimit;
 
-    public MovingPipe(int pipeY, ImageIcon pipeImage, ImageIcon background, Game game) {
-        super(pipeY, pipeImage, background);
-        xUpperLimit = game.getPipeMaxY();
-        xBottomLimit = game.getPipeMinY();
+    public MovingPipe(int pipeY, ImageIcon pipeImage, ImageIcon background, Game game, boolean isTopPipe, int randomDirection) {
+        super(pipeY, pipeImage, background, game, isTopPipe,randomDirection);
+
     }
 
+    @Override
     public void moveUp() {
+        setPipeY(getPipeY() - 1);
+    }
+
+    @Override
+    public void moveDown() {
         setPipeY(getPipeY() + 1);
     }
-
-
 }
