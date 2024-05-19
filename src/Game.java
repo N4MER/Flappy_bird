@@ -11,7 +11,7 @@ public class Game extends JPanel implements ActionListener {
     private ImageIcon bottomPipeImage;
     private ImageIcon topPipeImage;
     private Timer gameLoop;
-    private Timer pipeSpawnRate;
+    private Timer pipeSpawner;
     private ArrayList<Pipe> pipes = new ArrayList<>();
     private Random random = new Random();
     private int randomY;
@@ -26,10 +26,11 @@ public class Game extends JPanel implements ActionListener {
     private int pipeGap = 150;
     private int pipeDifficulty = 80;
     private int score = 0;
-    private double basePipeSpawnDelay = 1500;
-    private double pipeSpawnDelay = basePipeSpawnDelay;
+    private double basePipeSpawnRate = 1500;
+    private double pipeSpawnRate = basePipeSpawnRate;
     private StartButton startButton;
     private ResetButton resetButton;
+    private CloseButton closeButton;
     private int randomDirection;
 
     public Game(String backGroundImageName, String birdImageName, String birdFallingImageName, String birdSemiFallingImageName, String birdJumpImageName, String bottomPipeImageName, String topPipeImageName) {
@@ -38,9 +39,10 @@ public class Game extends JPanel implements ActionListener {
         bottomPipeImage = new ImageIcon(bottomPipeImageName);
         topPipeImage = new ImageIcon(topPipeImageName);
         gameLoop = new Timer(1000 / 60, this);
-        pipeSpawnRate = new Timer((int) pipeSpawnDelay, e -> addPipes());
+        pipeSpawner = new Timer((int) pipeSpawnRate, e -> addPipes());
         startButton = new StartButton(this);
         resetButton = new ResetButton(this);
+        closeButton = new CloseButton(this);
         setLayout(null);
         setFocusable(true);
         addKeyListener(bird);
@@ -51,6 +53,7 @@ public class Game extends JPanel implements ActionListener {
         bird.setBirdX(backgroundImage.getIconWidth() / 8);
         bird.setBirdY(backgroundImage.getIconHeight() / 2 + bird.getBirdHeight());
         add(startButton);
+        add(closeButton);
         repaint();
     }
 
@@ -92,7 +95,7 @@ public class Game extends JPanel implements ActionListener {
             }
         }
         if (isGameOver()) {
-            pipeSpawnRate.stop();
+            pipeSpawner.stop();
             gameLoop.stop();
             this.add(resetButton);
         }
@@ -114,8 +117,8 @@ public class Game extends JPanel implements ActionListener {
     }
 
     public void calculatePipeSpawnRate() {
-        pipeSpawnDelay = basePipeSpawnDelay / ((double) gameSpeed / (double) baseGameSpeed);
-        pipeSpawnRate.setDelay((int) pipeSpawnDelay);
+        pipeSpawnRate = basePipeSpawnRate / ((double) gameSpeed / (double) baseGameSpeed);
+        pipeSpawner.setDelay((int) pipeSpawnRate);
     }
 
     public void drawPipes(Graphics g) {
@@ -163,7 +166,7 @@ public class Game extends JPanel implements ActionListener {
         Pipe topPipe = new Pipe(bottomPipe.getPipeY() - pipeGap - topPipeImage.getIconHeight(), topPipeImage, backgroundImage, this, true, randomDirection);
         pipes.add(bottomPipe);
         pipes.add(topPipe);
-        pipeSpawnRate.start();
+        pipeSpawner.start();
         gameLoop.start();
         bird.jump();
     }
@@ -173,11 +176,11 @@ public class Game extends JPanel implements ActionListener {
         bird.setBirdSpeed(bird.getBirdBaseSpeed());
         bird.setBirdImage(bird.getNormalBirdImage());
         gameSpeed = baseGameSpeed;
-        pipeSpawnDelay = basePipeSpawnDelay;
+        pipeSpawnRate = basePipeSpawnRate;
         bird.setBirdY(backgroundImage.getIconHeight() / 2 + bird.getBirdHeight());
         gameOver = false;
         pipes.clear();
-        pipeSpawnRate.stop();
+        pipeSpawner.stop();
         gameLoop.stop();
         add(startButton);
         remove(resetButton);
@@ -216,7 +219,7 @@ public class Game extends JPanel implements ActionListener {
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(getBackgroundWidth(), getBackgroundHeight());
+        return Toolkit.getDefaultToolkit().getScreenSize();
     }
 }
 

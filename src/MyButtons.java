@@ -5,8 +5,14 @@ import java.awt.event.ActionEvent;
 public abstract class MyButtons extends JButton {
     private InputMap inputMap;
     private ActionMap actionMap;
-    private KeyStroke spaceKey = KeyStroke.getKeyStroke("SPACE");
+    private KeyStroke key;
     private Game game;
+    private Action buttonAction = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            performedActionOnPress(game);
+        }
+    };
 
 
     public MyButtons(Game game) {
@@ -17,18 +23,17 @@ public abstract class MyButtons extends JButton {
         setBorderPainted(false);
         setFocusable(false);
         myAddActionListener(game);
+        setInputToAction(KeyStroke.getKeyStroke("SPACE"));
+    }
+    public void setInputToAction(KeyStroke keyStroke){
+        key = keyStroke;
         inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         actionMap = getActionMap();
-        inputMap.put(spaceKey, "pressed space");
+        inputMap.put(key, "pressed space");
         actionMap.put("pressed space", buttonAction );
+
     }
 
-    private Action buttonAction = new AbstractAction() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            performedActionOnPress(game);
-        }
-    };
 
     public void myAddActionListener(Game game) {
         this.addActionListener(e -> {
