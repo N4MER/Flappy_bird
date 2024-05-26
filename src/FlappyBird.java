@@ -1,19 +1,31 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class FlappyBird extends JFrame {
     private Game game;
+    private GameScaler gameScaler;
 
     public FlappyBird(String backgroundImageName, String birdImageName, String birdFallingImageName, String birdSemiFallingImageName, String birdJumpImageName, String bottomPipeImageName, String topPipeImageName) {
-        game = new Game(backgroundImageName, birdImageName, birdFallingImageName, birdSemiFallingImageName, birdJumpImageName, bottomPipeImageName, topPipeImageName);
-        //this.setResizable(false);
+        game = new Game(this, backgroundImageName, birdImageName, birdFallingImageName, birdSemiFallingImageName, birdJumpImageName, bottomPipeImageName, topPipeImageName);
+        add(game);
         setSize(game.getBackgroundWidth(), game.getBackgroundHeight());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        setUndecorated(true);
         setLayout(null);
-        add(game);
+        setResizable(false);
+        gameScaler = new GameScaler(game, game.getBird());
         setComponentZOrder(game, 0);
         pack();
+        game.initializeGame(this);
+        getGameScaler().resize(this,game,game.getBird());
+        getGameScaler().resizeBack(this,game,game.getBird());
+        setSize(game.getWidth(),game.getBackgroundHeight());
+        setLocationRelativeTo(null);
         setVisible(true);
         game.requestFocus();
+    }
+
+    public GameScaler getGameScaler() {
+        return gameScaler;
     }
 }

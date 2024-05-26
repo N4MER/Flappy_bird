@@ -17,6 +17,7 @@ public class Bird implements KeyListener, MouseListener {
     private int birdBaseSpeed = 8;
     private int birdSpeed = birdBaseSpeed;
     private int gravity = 1;
+    private int jumpForce = -13;
 
     public Bird(String birdImageName, String birdFallingImageName, String birdSemiFallingImageName, String birdJumpImageName) {
         birdImage = new ImageIcon(birdImageName);
@@ -46,7 +47,7 @@ public class Bird implements KeyListener, MouseListener {
     }
 
     public void jump() {
-        birdSpeed = -12;
+        birdSpeed = jumpForce;
     }
 
     public void changeBirdImage() {
@@ -143,5 +144,65 @@ public class Bird implements KeyListener, MouseListener {
 
     public void setBirdImage(ImageIcon birdImage) {
         this.birdImage = birdImage;
+    }
+
+    public ImageIcon getBirdSemiFallingImage() {
+        return birdSemiFallingImage;
+    }
+
+    public void setBirdSemiFallingImage(ImageIcon birdSemiFallingImage) {
+        this.birdSemiFallingImage = birdSemiFallingImage;
+    }
+
+    public ImageIcon getBirdJumpImage() {
+        return birdJumpImage;
+    }
+
+    public void setBirdJumpImage(ImageIcon birdJumpImage) {
+        this.birdJumpImage = birdJumpImage;
+    }
+
+    public ImageIcon getBirdFallingImage() {
+        return birdFallingImage;
+    }
+
+    public void setBirdFallingImage(ImageIcon birdFallingImage) {
+        this.birdFallingImage = birdFallingImage;
+    }
+
+    public void setNormalBirdImage(ImageIcon normalBirdImage) {
+        this.normalBirdImage = normalBirdImage;
+    }
+
+    public void setBirdHeight(int birdHeight) {
+        this.birdHeight = birdHeight;
+    }
+
+    public void setBirdWidth(int birdWidth) {
+        this.birdWidth = birdWidth;
+    }
+
+    public void setBirdBaseSpeed(int birdBaseSpeed) {
+        this.birdBaseSpeed = birdBaseSpeed;
+    }
+
+    public int getBirdSpeed() {
+        return birdSpeed;
+    }
+
+    public int getGravity() {
+        return gravity;
+    }
+
+    public void setGravity(int gravity) {
+        this.gravity = gravity;
+    }
+
+    public int getJumpForce() {
+        return jumpForce;
+    }
+
+    public void setJumpForce(int jumpForce) {
+        this.jumpForce = jumpForce;
     }
 }

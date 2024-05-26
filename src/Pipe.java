@@ -14,8 +14,6 @@ public class Pipe {
     private boolean isTopPipe;
 
     private boolean passed;
-    private int randomDirection;
-
 
     public Pipe(int pipeY, ImageIcon pipeImage, ImageIcon background, Game game, boolean isTopPipe, int randomDirection) {
         this.pipeImage = pipeImage;

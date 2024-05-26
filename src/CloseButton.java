@@ -4,32 +4,25 @@ import java.awt.event.ActionEvent;
 public class CloseButton extends MyButtons {
     private InputMap inputMap;
     private ActionMap actionMap;
-    private KeyStroke key;
-    private Game game;
-
+    private KeyStroke key = KeyStroke.getKeyStroke("ESCAPE");
 
     public CloseButton(Game game) {
         super(game);
-        this.game = game;
-        setBounds(game.getBackgroundWidth() - 150, 0, 150, 150);
-        setText("Press Esc to close");
-        setInputToAction(KeyStroke.getKeyStroke("ESCAPE"));
+        setButtonX(game.getBackgroundWidth());
+        setButtonY(0);
+        setButtonWidth(20);
+        setButtonHeight(20);
+        setBounds(getButtonX(), getButtonY(), getButtonWidth(), getButtonHeight());
+        setText("X");
+        setInputToAction(key);
     }
-
-    private Action buttonAction = new AbstractAction() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            performedActionOnPress(game);
-        }
-    };
-
     @Override
     public void setInputToAction(KeyStroke keyStroke) {
         key = keyStroke;
         inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         actionMap = getActionMap();
         inputMap.put(key, "pressed escape");
-        actionMap.put("pressed escape", buttonAction);
+        actionMap.put("pressed escape", getButtonAction());
     }
 
     @Override

@@ -1,3 +1,5 @@
+import org.ietf.jgss.GSSManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -31,9 +33,10 @@ public class Game extends JPanel implements ActionListener {
     private StartButton startButton;
     private ResetButton resetButton;
     private CloseButton closeButton;
+    private FullscreenButton fullscreenButton;
     private int randomDirection;
 
-    public Game(String backGroundImageName, String birdImageName, String birdFallingImageName, String birdSemiFallingImageName, String birdJumpImageName, String bottomPipeImageName, String topPipeImageName) {
+    public Game(FlappyBird flappyBird, String backGroundImageName, String birdImageName, String birdFallingImageName, String birdSemiFallingImageName, String birdJumpImageName, String bottomPipeImageName, String topPipeImageName) {
         backgroundImage = new ImageIcon(backGroundImageName);
         bird = new Bird(birdImageName, birdFallingImageName, birdSemiFallingImageName, birdJumpImageName);
         bottomPipeImage = new ImageIcon(bottomPipeImageName);
@@ -43,10 +46,14 @@ public class Game extends JPanel implements ActionListener {
         startButton = new StartButton(this);
         resetButton = new ResetButton(this);
         closeButton = new CloseButton(this);
+        fullscreenButton = new FullscreenButton(flappyBird, this);
         setLayout(null);
         setFocusable(true);
         addKeyListener(bird);
         addMouseListener(bird);
+    }
+
+    public void initializeGame(FlappyBird flappyBird) {
         pipeMaxY = backgroundImage.getIconHeight() - pipeDifficulty;
         pipeMinY = pipeDifficulty;
         randomY = random.nextInt(pipeMaxY - pipeGap - pipeMinY) + pipeMinY + pipeGap;
@@ -54,16 +61,12 @@ public class Game extends JPanel implements ActionListener {
         bird.setBirdY(backgroundImage.getIconHeight() / 2 + bird.getBirdHeight());
         add(startButton);
         add(closeButton);
-        repaint();
+        add(fullscreenButton);
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        draw(g);
-    }
-
-    public void draw(Graphics g) {
         g.drawImage(backgroundImage.getImage(), 0, 0, null);
         g.drawImage(bird.getBirdImage().getImage(), bird.getBirdX(), bird.getBirdY(), null);
         drawPipes(g);
@@ -220,6 +223,63 @@ public class Game extends JPanel implements ActionListener {
     @Override
     public Dimension getPreferredSize() {
         return Toolkit.getDefaultToolkit().getScreenSize();
+    }
+
+    public ImageIcon getBackgroundImage() {
+        return backgroundImage;
+    }
+
+    public void setBackgroundImage(ImageIcon backgroundImage) {
+        this.backgroundImage = backgroundImage;
+    }
+
+    public Bird getBird() {
+        return bird;
+    }
+
+    public void setPipeGap(int pipeGap) {
+        this.pipeGap = pipeGap;
+    }
+
+    public int getBaseGameSpeed() {
+        return baseGameSpeed;
+    }
+
+    public void setBaseGameSpeed(int baseGameSpeed) {
+        this.baseGameSpeed = baseGameSpeed;
+    }
+
+
+    public int getGameSpeedIncreaseSize() {
+        return gameSpeedIncreaseSize;
+    }
+
+    public void setGameSpeedIncreaseSize(int gameSpeedIncreaseSize) {
+        this.gameSpeedIncreaseSize = gameSpeedIncreaseSize;
+    }
+
+    public int getPipeDifficulty() {
+        return pipeDifficulty;
+    }
+
+    public void setPipeDifficulty(int pipeDifficulty) {
+        this.pipeDifficulty = pipeDifficulty;
+    }
+
+    public ResetButton getResetButton() {
+        return resetButton;
+    }
+
+    public StartButton getStartButton() {
+        return startButton;
+    }
+
+    public CloseButton getCloseButton() {
+        return closeButton;
+    }
+
+    public FullscreenButton getFullscreenButton() {
+        return fullscreenButton;
     }
 }
 
