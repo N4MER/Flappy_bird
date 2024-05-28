@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
 
 public class FlappyBird extends JFrame {
     private Game game;
@@ -13,10 +12,10 @@ public class FlappyBird extends JFrame {
         setUndecorated(true);
         setLayout(null);
         setResizable(false);
-        gameScaler = new GameScaler(game, game.getBird());
+        gameScaler = new GameScaler(game);
         setComponentZOrder(game, 0);
         pack();
-        game.initializeGame(this);
+        game.initializeGame();
         getGameScaler().resize(this,game,game.getBird());
         getGameScaler().resizeBack(this,game,game.getBird());
         setSize(game.getWidth(),game.getBackgroundHeight());

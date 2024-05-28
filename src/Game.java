@@ -53,10 +53,10 @@ public class Game extends JPanel implements ActionListener {
         addMouseListener(bird);
     }
 
-    public void initializeGame(FlappyBird flappyBird) {
+    public void initializeGame() {
         pipeMaxY = backgroundImage.getIconHeight() - pipeDifficulty;
         pipeMinY = pipeDifficulty;
-        randomY = random.nextInt(pipeMaxY - pipeGap - pipeMinY) + pipeMinY + pipeGap;
+        randomY = backgroundImage.getIconHeight() / 2 + pipeGap / 2;
         bird.setBirdX(backgroundImage.getIconWidth() / 8);
         bird.setBirdY(backgroundImage.getIconHeight() / 2 + bird.getBirdHeight());
         add(startButton);
@@ -136,7 +136,7 @@ public class Game extends JPanel implements ActionListener {
         if (score <= 1) {
             randomPipe = 1;
         } else {
-            randomPipe = random.nextInt(3) + 1;
+            randomPipe = random.nextInt(4) + 1;
         }
         Pipe bottomPipe = CreatePipes.createPipes(randomPipe, randomY, topPipeImage, bottomPipeImage, backgroundImage, this, false, randomDirection).getBottomPipe();
         Pipe topPipe = CreatePipes.createPipes(randomPipe, bottomPipe.getPipeY() - pipeGap - topPipeImage.getIconHeight(), topPipeImage, bottomPipeImage, backgroundImage, this, true, randomDirection).getTopPipe();
@@ -220,11 +220,6 @@ public class Game extends JPanel implements ActionListener {
         return pipeGap;
     }
 
-    @Override
-    public Dimension getPreferredSize() {
-        return Toolkit.getDefaultToolkit().getScreenSize();
-    }
-
     public ImageIcon getBackgroundImage() {
         return backgroundImage;
     }
@@ -280,6 +275,14 @@ public class Game extends JPanel implements ActionListener {
 
     public FullscreenButton getFullscreenButton() {
         return fullscreenButton;
+    }
+
+    public void setPipeMaxY(int pipeMaxY) {
+        this.pipeMaxY = pipeMaxY;
+    }
+
+    public void setPipeMinY(int pipeMinY) {
+        this.pipeMinY = pipeMinY;
     }
 }
 

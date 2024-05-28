@@ -8,12 +8,12 @@ public class CloseButton extends MyButtons {
 
     public CloseButton(Game game) {
         super(game);
+        setText("x");
         setButtonX(game.getBackgroundWidth());
         setButtonY(0);
         setButtonWidth(20);
         setButtonHeight(20);
         setBounds(getButtonX(), getButtonY(), getButtonWidth(), getButtonHeight());
-        setText("X");
         setInputToAction(key);
     }
     @Override

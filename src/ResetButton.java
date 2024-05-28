@@ -1,9 +1,11 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class ResetButton extends MyButtons {
     public ResetButton(Game game) {
         super(game);
-        setText("press to restart game");
+        setText("Press to restart");
+        setFont(new Font("Arial",Font.PLAIN,50));
         setInputToAction(KeyStroke.getKeyStroke("SPACE"));
     }
 

@@ -48,12 +48,10 @@ public class FullscreenButton extends MyButtons {
         if (resized) {
             flappyBird.getGameScaler().resizeBack(flappyBird, game, game.getBird());
             flappyBird.setLocationRelativeTo(null);
-            game.repaint();
             resized = false;
         } else {
             flappyBird.getGameScaler().resize(flappyBird, game, game.getBird());
             flappyBird.setLocation(0, 0);
-            game.repaint();
             resized = true;
         }
     }
