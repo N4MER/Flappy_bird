@@ -112,5 +112,19 @@ public class Pipe {
         this.pipeY = pipeY;
     }
 
+    public void setPipeX(int pipeX) {
+        this.pipeX = pipeX;
+    }
 
+    public boolean isTopPipe() {
+        return isTopPipe;
+    }
+
+    public void setPipeHeight(int pipeHeight) {
+        this.pipeHeight = pipeHeight;
+    }
+
+    public void setPipeWidth(int pipeWidth) {
+        this.pipeWidth = pipeWidth;
+    }
 }

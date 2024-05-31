@@ -18,22 +18,22 @@ public class Game extends JPanel implements ActionListener {
     private ImageIcon topPipeImage;
     private Timer gameLoop;
     private Timer pipeSpawner;
-    private ArrayList<Pipe> pipes = new ArrayList<>();
-    private Random random = new Random();
+    private ArrayList<Pipe> pipes;
+    private Random random;
     private int randomY;
     private int randomPipe;
     private int pipeMaxY;
     private int pipeMinY;
-    private boolean gameOver = false;
-    private int baseGameSpeed = 8;
-    private int gameSpeed = baseGameSpeed;
-    private int gameSpeedIncreaseSize = 1;
-    private int scoreCountForGameSpeedIncrease = 5;
-    private int pipeGap = 150;
-    private int pipeDifficulty = 80;
-    private int score = 0;
-    private double basePipeSpawnRate = 1500;
-    private double pipeSpawnRate = basePipeSpawnRate;
+    private boolean gameOver;
+    private int baseGameSpeed;
+    private int gameSpeed;
+    private int gameSpeedIncreaseSize;
+    private int scoreCountForGameSpeedIncrease;
+    private int pipeGap;
+    private int pipeDifficulty;
+    private int score;
+    private double basePipeSpawnRate;
+    private double pipeSpawnRate;
     private StartButton startButton;
     private ResetButton resetButton;
     private CloseButton closeButton;
@@ -42,31 +42,40 @@ public class Game extends JPanel implements ActionListener {
     private boolean isAtStartScreen = true;
 
     public Game(FlappyBird flappyBird, String backGroundImageName, String birdImageName, String birdFallingImageName, String birdSemiFallingImageName, String birdJumpImageName, String bottomPipeImageName, String topPipeImageName) {
+        pipes = new ArrayList<>();
+        random = new Random();
         backgroundImage = new ImageIcon(backGroundImageName);
         bird = new Bird(birdImageName, birdFallingImageName, birdSemiFallingImageName, birdJumpImageName);
         bottomPipeImage = new ImageIcon(bottomPipeImageName);
         topPipeImage = new ImageIcon(topPipeImageName);
+        basePipeSpawnRate = 1500;
+        pipeSpawnRate = basePipeSpawnRate;
         gameLoop = new Timer(1000 / 60, this);
         pipeSpawner = new Timer((int) pipeSpawnRate, e -> addPipes());
+        pipeDifficulty = 80;
+        pipeGap = 150;
+        pipeMaxY = backgroundImage.getIconHeight() - pipeDifficulty;
+        pipeMinY = pipeDifficulty;
+        randomY = backgroundImage.getIconHeight() / 2 + pipeGap / 2;
+        bird.setBirdX(backgroundImage.getIconWidth() / 8);
+        bird.setBirdY(backgroundImage.getIconHeight() / 2 + bird.getBirdHeight());
+        gameOver = false;
+        baseGameSpeed = 8;
+        gameSpeed = baseGameSpeed;
+        gameSpeedIncreaseSize = 1;
+        scoreCountForGameSpeedIncrease = 5;
+        score = 0;
         startButton = new StartButton(this);
         resetButton = new ResetButton(this);
         closeButton = new CloseButton(this);
         fullscreenButton = new FullscreenButton(flappyBird, this);
         setLayout(null);
         setFocusable(true);
-        addKeyListener(bird);
-        addMouseListener(bird);
-    }
-
-    public void initializeGame() {
-        pipeMaxY = backgroundImage.getIconHeight() - pipeDifficulty;
-        pipeMinY = pipeDifficulty;
-        randomY = backgroundImage.getIconHeight() / 2 + pipeGap / 2;
-        bird.setBirdX(backgroundImage.getIconWidth() / 8);
-        bird.setBirdY(backgroundImage.getIconHeight() / 2 + bird.getBirdHeight());
         add(startButton);
         add(closeButton);
         add(fullscreenButton);
+        addKeyListener(bird);
+        addMouseListener(bird);
     }
 
     @Override
@@ -191,20 +200,18 @@ public class Game extends JPanel implements ActionListener {
         isAtStartScreen = true;
         remove(resetButton);
     }
-
+    public boolean isGameOver() {
+        if (bird.getBirdY() + bird.getBirdHeight() >= backgroundImage.getIconHeight()) {
+            gameOver = true;
+        }
+        return gameOver;
+    }
     public int getBackgroundWidth() {
         return backgroundImage.getIconWidth();
     }
 
     public int getBackgroundHeight() {
         return backgroundImage.getIconHeight();
-    }
-
-    public boolean isGameOver() {
-        if (bird.getBirdY() + bird.getBirdHeight() >= backgroundImage.getIconHeight()) {
-            gameOver = true;
-        }
-        return gameOver;
     }
 
     public int getPipeMinY() {
@@ -286,6 +293,26 @@ public class Game extends JPanel implements ActionListener {
 
     public boolean isAtStartScreen() {
         return isAtStartScreen;
+    }
+
+    public ArrayList<Pipe> getPipes() {
+        return pipes;
+    }
+
+    public Timer getGameLoop() {
+        return gameLoop;
+    }
+
+    public Timer getPipeSpawner() {
+        return pipeSpawner;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
+
+    public int getScore() {
+        return score;
     }
 }
 

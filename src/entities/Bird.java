@@ -148,34 +148,6 @@ public class Bird implements KeyListener, MouseListener {
         this.birdImage = birdImage;
     }
 
-    public ImageIcon getBirdSemiFallingImage() {
-        return birdSemiFallingImage;
-    }
-
-    public void setBirdSemiFallingImage(ImageIcon birdSemiFallingImage) {
-        this.birdSemiFallingImage = birdSemiFallingImage;
-    }
-
-    public ImageIcon getBirdJumpImage() {
-        return birdJumpImage;
-    }
-
-    public void setBirdJumpImage(ImageIcon birdJumpImage) {
-        this.birdJumpImage = birdJumpImage;
-    }
-
-    public ImageIcon getBirdFallingImage() {
-        return birdFallingImage;
-    }
-
-    public void setBirdFallingImage(ImageIcon birdFallingImage) {
-        this.birdFallingImage = birdFallingImage;
-    }
-
-    public void setNormalBirdImage(ImageIcon normalBirdImage) {
-        this.normalBirdImage = normalBirdImage;
-    }
-
     public void setBirdHeight(int birdHeight) {
         this.birdHeight = birdHeight;
     }

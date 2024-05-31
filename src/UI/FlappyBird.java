@@ -20,7 +20,6 @@ public class FlappyBird extends JFrame {
         gameScaler = new GameScaler(game);
         setComponentZOrder(game, 0);
         pack();
-        game.initializeGame();
         getGameScaler().resize(this,game,game.getBird());
         getGameScaler().resizeBack(this,game,game.getBird());
         setSize(game.getWidth(),game.getBackgroundHeight());
@@ -31,5 +30,9 @@ public class FlappyBird extends JFrame {
 
     public GameScaler getGameScaler() {
         return gameScaler;
+    }
+
+    public Game getGame() {
+        return game;
     }
 }

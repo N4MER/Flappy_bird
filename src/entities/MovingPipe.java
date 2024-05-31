@@ -1,6 +1,5 @@
 package entities;
 
-import entities.Pipe;
 import gameLogic.Game;
 
 import javax.swing.*;
