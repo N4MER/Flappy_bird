@@ -54,6 +54,8 @@ public class GameScaler {
         bird.setBirdBaseSpeed(bird.getBirdBaseSpeed() * heightResizeValue);
         bird.setJumpForce(bird.getJumpForce() * heightResizeValue);
         game.setPipeMaxY(screenHeight-game.getPipeDifficulty());
+        bird.setBirdY(game.getBackgroundHeight()/2 + bird.getBirdHeight());
+        bird.setBirdX(game.getBackgroundWidth()/8);
     }
     public void decreaseOtherParameters(Game game, Bird bird) {
         game.setBaseGameSpeed(game.getBaseGameSpeed() / widthResizeValue);
@@ -64,6 +66,8 @@ public class GameScaler {
         bird.setBirdBaseSpeed(bird.getBirdBaseSpeed() / heightResizeValue);
         bird.setJumpForce(bird.getJumpForce() / heightResizeValue);
         game.setPipeMaxY(baseScreenHeight-game.getPipeDifficulty());
+        bird.setBirdY(game.getBackgroundHeight()/2 + bird.getBirdHeight());
+        bird.setBirdX(game.getBackgroundWidth()/8);
     }
 
     public void resizeButtons(Game game) {

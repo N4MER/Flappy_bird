@@ -35,6 +35,7 @@ public class Game extends JPanel implements ActionListener {
     private CloseButton closeButton;
     private FullscreenButton fullscreenButton;
     private int randomDirection;
+    private boolean isAtStartScreen = true;
 
     public Game(FlappyBird flappyBird, String backGroundImageName, String birdImageName, String birdFallingImageName, String birdSemiFallingImageName, String birdJumpImageName, String bottomPipeImageName, String topPipeImageName) {
         backgroundImage = new ImageIcon(backGroundImageName);
@@ -87,6 +88,11 @@ public class Game extends JPanel implements ActionListener {
     }
 
     public void checkIfPassed() {
+        if (isGameOver()) {
+            pipeSpawner.stop();
+            gameLoop.stop();
+            this.add(resetButton);
+        }
         for (Pipe pipe : pipes) {
             if (collidedWithPipe(bird, pipe)) {
                 gameOver = true;
@@ -96,11 +102,6 @@ public class Game extends JPanel implements ActionListener {
                     pipe.setPassed(true);
                 }
             }
-        }
-        if (isGameOver()) {
-            pipeSpawner.stop();
-            gameLoop.stop();
-            this.add(resetButton);
         }
     }
 
@@ -164,11 +165,8 @@ public class Game extends JPanel implements ActionListener {
 
     public void startGame() {
         remove(startButton);
+        isAtStartScreen = false;
         randomDirection = random.nextInt(2) + 1;
-        Pipe bottomPipe = new Pipe(randomY, bottomPipeImage, backgroundImage, this, false, randomDirection);
-        Pipe topPipe = new Pipe(bottomPipe.getPipeY() - pipeGap - topPipeImage.getIconHeight(), topPipeImage, backgroundImage, this, true, randomDirection);
-        pipes.add(bottomPipe);
-        pipes.add(topPipe);
         pipeSpawner.start();
         gameLoop.start();
         bird.jump();
@@ -186,6 +184,7 @@ public class Game extends JPanel implements ActionListener {
         pipeSpawner.stop();
         gameLoop.stop();
         add(startButton);
+        isAtStartScreen = true;
         remove(resetButton);
     }
 
@@ -281,8 +280,8 @@ public class Game extends JPanel implements ActionListener {
         this.pipeMaxY = pipeMaxY;
     }
 
-    public void setPipeMinY(int pipeMinY) {
-        this.pipeMinY = pipeMinY;
+    public boolean isAtStartScreen() {
+        return isAtStartScreen;
     }
 }
 

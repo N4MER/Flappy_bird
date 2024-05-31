@@ -45,14 +45,16 @@ public class FullscreenButton extends MyButtons {
     }
 
     public void actionAfterPress(FlappyBird flappyBird, Game game) {
-        if (resized) {
-            flappyBird.getGameScaler().resizeBack(flappyBird, game, game.getBird());
-            flappyBird.setLocationRelativeTo(null);
-            resized = false;
-        } else {
-            flappyBird.getGameScaler().resize(flappyBird, game, game.getBird());
-            flappyBird.setLocation(0, 0);
-            resized = true;
+        if (game.isAtStartScreen()) {
+            if (resized) {
+                flappyBird.getGameScaler().resizeBack(flappyBird, game, game.getBird());
+                flappyBird.setLocationRelativeTo(null);
+                resized = false;
+            } else {
+                flappyBird.getGameScaler().resize(flappyBird, game, game.getBird());
+                flappyBird.setLocation(0, 0);
+                resized = true;
+            }
         }
     }
 
