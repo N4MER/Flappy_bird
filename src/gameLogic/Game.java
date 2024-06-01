@@ -212,11 +212,13 @@ public class Game extends JPanel implements ActionListener {
     /**
      * Collided with pipe boolean.
      * Checks if bird collided with a pipe.
+     *
+     * copied from internet
+     *
      * @param bird the bird
      * @param pipe the pipe
      * @return the boolean
      */
-// copied from internet
     public boolean collidedWithPipe(Bird bird, Pipe pipe) {
         return bird.getBirdX() <= pipe.getPipeX() + pipe.getPipeWidth() &&
                 bird.getBirdX() + bird.getBirdWidth() >= pipe.getPipeX() &&
