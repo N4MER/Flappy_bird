@@ -160,6 +160,8 @@ public class GameScaler {
     public void resizeWindow(FlappyBird flappyBird, Game game) {
         game.setBackgroundImage(new ImageIcon(newBackgroundImage));
         flappyBird.setSize(screenSize);
+        flappyBird.setLocation(0,0);
+        flappyBird.getGame().setLocation(0,0);
     }
 
     /**
@@ -171,6 +173,8 @@ public class GameScaler {
     public void resizeWindowBack(FlappyBird flappyBird, Game game) {
         game.setBackgroundImage(new ImageIcon(backgroundImage));
         flappyBird.setSize(game.getBackgroundWidth(), game.getBackgroundHeight());
+        flappyBird.setLocationRelativeTo(null);
+        flappyBird.getGame().setLocation(0,0);
     }
 
 

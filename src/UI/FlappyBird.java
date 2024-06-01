@@ -33,12 +33,11 @@ public class FlappyBird extends JFrame {
         setLayout(null);
         setResizable(false);
         gameScaler = new GameScaler(game);
-        setComponentZOrder(game, 0);
-        pack();
+
+        //pack();
         getGameScaler().resize(this,game,game.getBird());
         getGameScaler().resizeBack(this,game,game.getBird());
-        setSize(game.getWidth(),game.getBackgroundHeight());
-        setLocationRelativeTo(null);
+        setComponentZOrder(game, 0);
         setVisible(true);
         game.requestFocus();
     }
