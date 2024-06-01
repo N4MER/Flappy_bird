@@ -11,6 +11,7 @@ import javax.swing.*;
 public class FlappyBird extends JFrame {
     private Game game;
     private GameScaler gameScaler;
+    private ImageIcon gameIcon = new ImageIcon("src/flappyBirdImages/flappyBirdIcon.jpg");
 
     /**
      * Instantiates a new Flappy bird.
@@ -32,9 +33,9 @@ public class FlappyBird extends JFrame {
         setUndecorated(true);
         setLayout(null);
         setResizable(false);
+        setTitle("Flappy Bird");
+        setIconImage(gameIcon.getImage());
         gameScaler = new GameScaler(game);
-
-        //pack();
         getGameScaler().resize(this,game,game.getBird());
         getGameScaler().resizeBack(this,game,game.getBird());
         setComponentZOrder(game, 0);
