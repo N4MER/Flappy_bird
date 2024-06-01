@@ -48,7 +48,7 @@ public class Game extends JPanel implements ActionListener {
      * Instantiates a new Game.
      * Sets needed parameters.
      * Instantiates needed objects.
-     * Adds buttons.
+     * Add buttons.
      * @param flappyBird               the flappy bird
      * @param backgroundImageName      the background image name
      * @param birdImageName            the bird image name
