@@ -5,11 +5,19 @@ import gameLogic.Game;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
+/**
+ * The type Close button.
+ */
 public class CloseButton extends MyButtons {
     private InputMap inputMap;
     private ActionMap actionMap;
     private KeyStroke key = KeyStroke.getKeyStroke("ESCAPE");
 
+    /**
+     * Instantiates a new Close button.
+     *
+     * @param game the game
+     */
     public CloseButton(Game game) {
         super(game);
         setText("x");

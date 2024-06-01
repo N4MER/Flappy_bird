@@ -6,7 +6,15 @@ import gameLogic.Game;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The type Reset button.
+ */
 public class ResetButton extends MyButtons {
+    /**
+     * Instantiates a new Reset button.
+     *
+     * @param game the game
+     */
     public ResetButton(Game game) {
         super(game);
         setText("Press to restart");

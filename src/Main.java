@@ -2,6 +2,7 @@ import UI.FlappyBird;
 
 public class Main {
     public static void main(String[] args) {
+
         new FlappyBird(
                 "src/flappyBirdImages/background.png",
                 "src/flappyBirdImages/flappyBird.png",
@@ -11,5 +12,6 @@ public class Main {
                 "src/flappyBirdImages/bottomPipe.png",
                 "src/flappyBirdImages/topPipe.png"
         );
+
     }
 }

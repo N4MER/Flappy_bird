@@ -6,6 +6,9 @@ import entities.Bird;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The type Game scaler.
+ */
 public class GameScaler {
     private Image backgroundImage;
     private Image newBackgroundImage;
@@ -18,6 +21,11 @@ public class GameScaler {
     private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 
+    /**
+     * Instantiates a new Game scaler.
+     *
+     * @param game the game
+     */
     public GameScaler(Game game) {
         this.backgroundImage = game.getBackgroundImage().getImage();
         screenWidth = screenSize.width;
@@ -26,6 +34,13 @@ public class GameScaler {
         baseScreenHeight = game.getBackgroundHeight();
     }
 
+    /**
+     * Resize.
+     * Resizes everything.
+     * @param flappyBird the flappy bird
+     * @param game       the game
+     * @param bird       the bird
+     */
     public void resize(FlappyBird flappyBird, Game game, Bird bird) {
         calculateResizeValue();
         createResizedImages();
@@ -34,22 +49,43 @@ public class GameScaler {
         resizeButtons(game);
     }
 
+    /**
+     * Resize back.
+     * Resizes everything back.
+     * @param flappyBird the flappy bird
+     * @param game       the game
+     * @param bird       the bird
+     */
     public void resizeBack(FlappyBird flappyBird, Game game, Bird bird) {
         resizeWindowBack(flappyBird, game);
         decreaseOtherParameters(game, bird);
         resizeButtonsBack(game);
     }
 
+    /**
+     * Calculate resize value.
+     * Calculates by how much were width and height increased
+     */
     public void calculateResizeValue() {
         widthResizeValue = screenWidth / baseScreenWidth;
         heightResizeValue = screenHeight / baseScreenHeight;
 
     }
 
+    /**
+     * Create resized images.
+     * Creates resized image for background.
+     */
     public void createResizedImages() {
         newBackgroundImage = backgroundImage.getScaledInstance(screenWidth, screenHeight, Image.SCALE_SMOOTH);
     }
 
+    /**
+     * Increase other parameters.
+     * Increases necessary parameters for gameplay.
+     * @param game the game
+     * @param bird the bird
+     */
     public void increaseOtherParameters(Game game, Bird bird) {
         game.setBaseGameSpeed(game.getBaseGameSpeed() * widthResizeValue);
         game.setGameSpeedIncreaseSize(game.getGameSpeedIncreaseSize() * widthResizeValue);
@@ -62,6 +98,13 @@ public class GameScaler {
         bird.setBirdY(game.getBackgroundHeight()/2 + bird.getBirdHeight());
         bird.setBirdX(game.getBackgroundWidth()/8);
     }
+
+    /**
+     * Decrease other parameters.
+     * Decreases necessary parameters for gameplay.
+     * @param game the game
+     * @param bird the bird
+     */
     public void decreaseOtherParameters(Game game, Bird bird) {
         game.setBaseGameSpeed(game.getBaseGameSpeed() / widthResizeValue);
         game.setGameSpeedIncreaseSize(game.getGameSpeedIncreaseSize() / widthResizeValue);
@@ -75,6 +118,11 @@ public class GameScaler {
         bird.setBirdX(game.getBackgroundWidth()/8);
     }
 
+    /**
+     * Resize buttons.
+     * Resize buttons and puts them in correct location.
+     * @param game the game
+     */
     public void resizeButtons(Game game) {
         game.getStartButton().setSize(screenSize);
         game.getResetButton().setSize(screenSize);
@@ -86,6 +134,11 @@ public class GameScaler {
         game.getFullscreenButton().setLocation(game.getBackgroundWidth() - game.getCloseButton().getWidth() - game.getFullscreenButton().getWidth(), 0);
     }
 
+    /**
+     * Resize buttons back.
+     * Resize buttons back and puts them in correct location.
+     * @param game the game
+     */
     public void resizeButtonsBack(Game game) {
         game.getStartButton().setSize(baseScreenWidth,baseScreenHeight);
         game.getResetButton().setSize(baseScreenWidth,baseScreenHeight);
@@ -98,11 +151,23 @@ public class GameScaler {
 
     }
 
+    /**
+     * Resize window.
+     * Resizes main jFrame.
+     * @param flappyBird the flappy bird
+     * @param game       the game
+     */
     public void resizeWindow(FlappyBird flappyBird, Game game) {
         game.setBackgroundImage(new ImageIcon(newBackgroundImage));
         flappyBird.setSize(screenSize);
     }
 
+    /**
+     * Resize window back.
+     * Resizes main jFrame back.
+     * @param flappyBird the flappy bird
+     * @param game       the game
+     */
     public void resizeWindowBack(FlappyBird flappyBird, Game game) {
         game.setBackgroundImage(new ImageIcon(backgroundImage));
         flappyBird.setSize(game.getBackgroundWidth(), game.getBackgroundHeight());

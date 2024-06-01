@@ -6,7 +6,15 @@ import gameLogic.Game;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The type Start button.
+ */
 public class StartButton extends MyButtons {
+    /**
+     * Instantiates a new Start button.
+     *
+     * @param game the game
+     */
     public StartButton(Game game) {
         super(game);
         setText("Press to start");
